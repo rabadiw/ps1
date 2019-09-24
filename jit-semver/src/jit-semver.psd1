@@ -15,13 +15,18 @@
   PowerShellVersion = '5.0'
 
   # Functions to export from this module
-  FunctionsToExport = @()
+  FunctionsToExport = @(
+    'Get-SemVer',
+    'Set-SemVer',
+    'ConvertTo-SemVer',
+    'Format-SemVerString'
+  )
 
   # Cmdlets to export from this module
   CmdletsToExport   = @()
 
   # Variables to export from this module
-  VariablesToExport = @('GitPromptScriptBlock')
+  VariablesToExport = @('')
 
   # Aliases to export from this module
   AliasesToExport   = @()
