@@ -1,3 +1,6 @@
 VERSION
 *.nupkg
 obj
+
+# test yml
+.semver.yml

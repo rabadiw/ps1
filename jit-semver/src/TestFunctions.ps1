@@ -46,6 +46,18 @@ function Test-SemVer {
   return $hasVer
 }
 
+<#
+.SYNOPSIS
+    Test config override.
+.INPUTS
+    None
+.OUTPUTS
+    True if .semver.yml exists.
+#>
+function Test-SemVerOverride {
+  Test-Path ./.semver.yml
+}
+
 function Test-Function {
   param(
     [Parameter(Mandatory)][scriptblock]$fun,
@@ -56,3 +68,5 @@ function Test-Function {
   -Not($result) | Where-Object { Write-Host -ForegroundColor Red $msg }
   return $result
 }
+
+

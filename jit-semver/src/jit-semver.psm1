@@ -25,12 +25,27 @@ function Format-SemVerString {
   "$($semver.major).$($semver.minor).$($semver.patch)${prevalue}"
 }
 
+function Get-SemVerOverride {
+  Get-Content ./.semver.yml |
+  ForEach-Object { , ($_ -split ':') } |
+  ForEach-Object { @{ $_[0] = $_[1] } }
+}
+
 function Get-SemVer {
-  if (-Not(Test-SemVer)) {
-    return
+  $semver = $null
+  if (Test-SemVerOverride) {
+    $semver = (Get-SemVerOverride).Version | ConvertTo-SemVer
   }
-  # convert defaults to (git describe --tags)
-  ConvertTo-SemVer | Format-SemVerString
+  elseif (Test-SemVer) {
+    # value of (git describe --tags)
+    $semver = ConvertTo-SemVer
+  }
+  else {
+    # default
+    $semver = ConvertTo-SemVer -semver "1.0.0-alpha.0"
+  }
+
+  $semver | Format-SemVerString
 }
 
 function Set-SemVer {
