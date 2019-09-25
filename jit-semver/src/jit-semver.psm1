@@ -28,7 +28,7 @@ function Format-SemVerString {
 function Get-SemVerOverride {
   Get-Content ./.semver.yml |
   ForEach-Object { , ($_ -split ':') } |
-  ForEach-Object { @{ $_[0] = $_[1] } }
+  ForEach-Object { @{ $_[0] = $_[1].Trim() } }
 }
 
 function Get-SemVer {
