@@ -3,5 +3,6 @@ VERSION
 obj
 
 .psgkey
+dist/
 # test yml
 .semver.yml
