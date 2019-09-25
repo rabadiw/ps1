@@ -47,7 +47,7 @@ function Get-SemVer {
   }
   else {
     # default
-    Write-Host -ForegroundColor Yellow "Defaulting to 1.0.0-alpha."
+    Write-Warning "Defaulting to 1.0.0-alpha."
     $SemVersion = ConvertTo-SemVer -semver "1.0.0-alpha"
   }
 
@@ -143,7 +143,7 @@ function Set-SemVer {
     # Ensure no outstanding git commits
     if ($Force -or (Test-GitState)) {
       Invoke-Command -ScriptBlock $setcmd
-      Write-Host -ForegroundColor Green "Success! Version updated to $($setcmdPattern -f ($nextsemver, $Prefix, ''))."
+      Write-Information "Success! Version updated to $($setcmdPattern -f ($nextsemver, $Prefix, ''))."
     }
   }
   else {

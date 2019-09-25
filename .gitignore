@@ -2,5 +2,6 @@ VERSION
 *.nupkg
 obj
 
+.psgkey
 # test yml
 .semver.yml

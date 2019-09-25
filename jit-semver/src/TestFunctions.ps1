@@ -25,7 +25,7 @@ function Test-String {
 function Test-GitState {
   $hasDiff = (git diff-index HEAD --).Count -gt 0
   if ($hasDiff) {
-    Write-Host -ForegroundColor Red "You have uncommitted changes."
+    Write-Warning "You have uncommitted changes."
   }
   return -NOT($hasDiff)
 }
@@ -47,7 +47,7 @@ function Test-SemVer {
 
   $hasVer = ( git tag ).Count -gt 0
   if ($ShowMessage -and -Not($hasVer)) {
-    Write-Host "No tags were found. See 'git tag' for instructions on how to add a tag."
+    Write-Warning "No tags were found. See 'git tag' for instructions on how to add a tag."
   }
   return $hasVer
 }
@@ -62,7 +62,7 @@ function Test-SemVer {
 #>
 function Test-SemVerOverride {
   if (Test-Path ./.semver.yml) {
-    Write-Host -ForegroundColor Yellow "Please rename .semver.yml to .semver.yaml."
+    Write-Warning "Please rename .semver.yml to .semver.yaml."
   }
   (Test-Path ./.semver.yml, ./.semver.yaml1 | Where-Object { $_ -eq $true }).Count -gt 0
 }
@@ -78,7 +78,7 @@ function Test-Function {
   )
 
   $result = $fun.Invoke()
-  -Not($result) | Where-Object { Write-Host -ForegroundColor Red $msg }
+  -Not($result) | Where-Object { Write-Error $msg }
   return $result
 }
 
