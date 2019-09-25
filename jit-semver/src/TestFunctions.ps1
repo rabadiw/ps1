@@ -8,10 +8,10 @@
 #>
 function Test-String {
   param (
-    [Parameter(Mandatory = $false, Position = 0)][string]$val
+    [Parameter(Mandatory = $false, Position = 0)][string]$Value
   )
 
-  return -Not([System.String]::IsNullOrWhiteSpace($val))
+  return -Not([System.String]::IsNullOrWhiteSpace($Value))
 }
 
 <#
@@ -39,9 +39,15 @@ function Test-GitState {
     True if git has tags.
 #>
 function Test-SemVer {
-  $hasVer = ( git describe --tags ).Count -gt 0
-  if (-Not($hasVer)) {
-    Write-Host "Please add a tag. See 'git tag'."
+
+  param(
+    # If specified, show help message if missing tags.
+    [Parameter(Mandatory = $false, Position = 0)][switch]$ShowMessage = $false
+  )
+
+  $hasVer = ( git tag ).Count -gt 0
+  if ($ShowMessage -and -Not($hasVer)) {
+    Write-Host "No tags were found. See 'git tag' for instructions on how to add a tag."
   }
   return $hasVer
 }
