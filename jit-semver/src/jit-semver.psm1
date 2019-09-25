@@ -125,7 +125,7 @@ function Set-SemVer {
     param(
       [Parameter(Mandatory)][string]$semver
     )
-    git tag $semver
+    git tag "v$semver"
   }
 
   if ($PSCmdlet.ShouldProcess($semver, "Set-SemVer")) {
