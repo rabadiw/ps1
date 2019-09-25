@@ -2,10 +2,10 @@
 
 function ConvertTo-SemVer {
   param(
-    [Parameter(Mandatory = $false, ValueFromPipeline = $true)][string]$semver = (git describe --tags)
+    [Parameter(Mandatory = $false, ValueFromPipeline = $true)][string]$SemVersion = (git describe --tags)
   )
   [regex]$rx = "(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)-?(?<pre>[a-zA-Z]+)?\.?(?<prepatch>\d+)?\+?(?<build>\d+)?"
-  $curver = $rx.Match($semver)
+  $curver = $rx.Match($SemVersion)
 
   @{
     Major    = [int]$curver.Groups["major"].Value
@@ -19,13 +19,13 @@ function ConvertTo-SemVer {
 
 function Format-SemVerString {
   param(
-    [Parameter(Mandatory = $true, ValueFromPipeline = $true)][hashtable]$semver
+    [Parameter(Mandatory = $true, ValueFromPipeline = $true)][hashtable]$SemVersion
   )
 
-  $prevalue = if ($semver.pre -ne "") { "-$($semver.pre)" }
-  $prepatchvalue = if ($semver.prepatch -ne "") { ".$($semver.prepatch)" }
-  $buildvalue = if ($semver.build -ne "") { "+$($semver.build)" }
-  "$($semver.major).$($semver.minor).$($semver.patch)${prevalue}${prepatchvalue}${buildvalue}"
+  $prevalue = if ($SemVersion.pre -ne "") { "-$($SemVersion.pre)" }
+  $prepatchvalue = if ($SemVersion.prepatch -ne "") { ".$($SemVersion.prepatch)" }
+  $buildvalue = if ($SemVersion.build -ne "") { "+$($SemVersion.build)" }
+  "$($SemVersion.major).$($SemVersion.minor).$($SemVersion.patch)${prevalue}${prepatchvalue}${buildvalue}"
 }
 
 function Get-SemVerOverride {
@@ -35,54 +35,58 @@ function Get-SemVerOverride {
 }
 
 function Get-SemVer {
-  $semver = $null
+  $SemVersion = $null
   # TBD value
   #   if (Test-SemVerOverride) {
-  #     $semver = (Get-SemVerOverride).Version | ConvertTo-SemVer
+  #     $SemVersion = (Get-SemVerOverride).Version | ConvertTo-SemVer
   #   }
 
-  if (Test-SemVer) {
+  if ((Test-SemVer -ShowMessage)) {
     # value of (git describe --tags)
-    $semver = ConvertTo-SemVer
+    $SemVersion = ConvertTo-SemVer
   }
   else {
     # default
-    $semver = ConvertTo-SemVer -semver "1.0.0-alpha.0"
+    Write-Host -ForegroundColor Yellow "Defaulting to 1.0.0-alpha."
+    $SemVersion = ConvertTo-SemVer -semver "1.0.0-alpha"
   }
 
-  $semver | Format-SemVerString
+  $SemVersion | Format-SemVerString
 }
 
 function Set-SemVer {
   [cmdletbinding(SupportsShouldProcess = $true)]
 
   param(
-    [Parameter(Mandatory = $false)][ValidateSet("major", "minor", "patch", "build")][string]$semverb = $null,
-    [Parameter(Mandatory = $false)][string]$semver = (Get-SemVer)
+    [Parameter(Mandatory = $false)][ValidateSet("major", "minor", "patch", "build")][string]$SemVerb = $null,
+    [Parameter(Mandatory = $false)][string]$SemVersion = (Get-SemVer),
+    [Parameter(Mandatory = $false)][string]$Message = "",
+    [Parameter(Mandatory = $false)][string]$Prefix = "",
+    [Parameter(Mandatory = $false)][switch]$Force = $false
   )
 
-  ($major, $minor, $patch, $pre, $prepatch, $build) = ConvertTo-SemVer -semver $semver | ForEach-Object { ($_.Major, $_.Minor, $_.Patch, $_.Pre, $_.PrePatch, $_.Build) }
-  switch ($semverb) {
+  ($major, $minor, $patch, $pre, $prepatch, $build) = ConvertTo-SemVer -SemVersion $SemVersion | ForEach-Object { ($_.Major, $_.Minor, $_.Patch, $_.Pre, $_.PrePatch, $_.Build) }
+  switch ($SemVerb) {
     "major" {
       if (Test-String $pre) {
         switch ($pre.ToLower()) {
           "alpha" {
             $pre = "beta"
-            $prepatch = ""
+            $prepatch = $build = ""
           }
           "beta" {
             $pre = "rc"
-            $prepatch = ""
+            $prepatch = $build = ""
           }
           Default {
-            $pre = ""
-            $prepatch = ""
+            $pre = $prepatch = $build = ""
           }
         }
       }
       else {
         $major++
         $minor = $patch = 0
+        $build = ""
       }
     }
     "minor" {
@@ -101,7 +105,13 @@ function Set-SemVer {
     }
     Default {
       if (Test-String $pre) {
-        $prepatch++
+        # skip if initial set
+        if (Test-SemVer) {
+          $prepatch++
+        }
+        else {
+          $prepatch = ""
+        }
         $build = ""
       }
       else {
@@ -121,22 +131,23 @@ function Set-SemVer {
     Build    = $build
   } | Format-SemVerString
 
-  $setcmd = {
-    param(
-      [Parameter(Mandatory)][string]$semver
-    )
-    git tag "v$semver"
-  }
 
-  if ($PSCmdlet.ShouldProcess($semver, "Set-SemVer")) {
+  $setcmdPattern = "git tag '{1}v{0}'{2}"
+  $msgString = ""
+  if (Test-String $Message) {
+    $msgString = " -m '${Message}'"
+  }
+  $setcmd = [scriptblock]::Create($setcmdPattern -f ($nextsemver, $Prefix, $msgString))
+
+  if ($PSCmdlet.ShouldProcess($SemVersion, "Set-SemVer")) {
     # Ensure no outstanding git commits
-    if (Test-GitState) {
-      Invoke-Command -ScriptBlock $setcmd -ArgumentList $nextsemver
-      Write-Host -ForegroundColor Green "Success! Version updated to $pkgsemver"
+    if ($Force -or (Test-GitState)) {
+      Invoke-Command -ScriptBlock $setcmd
+      Write-Host -ForegroundColor Green "Success! Version updated to $($setcmdPattern -f ($nextsemver, $Prefix, ''))."
     }
   }
   else {
-    Write-Output "What if: git tag $nextsemver"
+    Write-Output "What if: $setcmd"
   }
 }
 
