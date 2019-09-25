@@ -4,7 +4,7 @@ function ConvertTo-SemVer {
   param(
     [Parameter(Mandatory = $false, ValueFromPipeline = $true)][string]$semver = (git describe --tags)
   )
-  [regex]$rx = "(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)-?(?<pre>[a-zA-Z]+)?\.?(?<prepatch>\d+)?"
+  [regex]$rx = "(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)-?(?<pre>[a-zA-Z]+)?\.?(?<prepatch>\d+)?\+?(?<build>\d+)?"
   $curver = $rx.Match($semver)
 
   @{
@@ -13,6 +13,7 @@ function ConvertTo-SemVer {
     Patch    = [int]$curver.Groups["patch"].Value
     Pre      = [string]$curver.Groups["pre"].Value
     PrePatch = [int]$curver.Groups["prepatch"].Value
+    Build    = [int]$curver.Groups["build"].Value
   }
 }
 
@@ -21,8 +22,10 @@ function Format-SemVerString {
     [Parameter(Mandatory = $true, ValueFromPipeline = $true)][hashtable]$semver
   )
 
-  $prevalue = if ($semver.pre -ne "") { "-$($semver.pre).$($semver.prepatch)" }
-  "$($semver.major).$($semver.minor).$($semver.patch)${prevalue}"
+  $prevalue = if ($semver.pre -ne "") { "-$($semver.pre)" }
+  $prepatchvalue = if ($semver.prepatch -ne "") { ".$($semver.prepatch)" }
+  $buildvalue = if ($semver.build -ne "") { "+$($semver.build)" }
+  "$($semver.major).$($semver.minor).$($semver.patch)${prevalue}${prepatchvalue}${buildvalue}"
 }
 
 function Get-SemVerOverride {
@@ -33,10 +36,12 @@ function Get-SemVerOverride {
 
 function Get-SemVer {
   $semver = $null
-  if (Test-SemVerOverride) {
-    $semver = (Get-SemVerOverride).Version | ConvertTo-SemVer
-  }
-  elseif (Test-SemVer) {
+  # TBD value
+  #   if (Test-SemVerOverride) {
+  #     $semver = (Get-SemVerOverride).Version | ConvertTo-SemVer
+  #   }
+
+  if (Test-SemVer) {
     # value of (git describe --tags)
     $semver = ConvertTo-SemVer
   }
@@ -52,22 +57,22 @@ function Set-SemVer {
   [cmdletbinding(SupportsShouldProcess = $true)]
 
   param(
-    [Parameter(Mandatory = $false)][ValidateSet("major", "minor", "patch")][string]$semverb = $null,
+    [Parameter(Mandatory = $false)][ValidateSet("major", "minor", "patch", "build")][string]$semverb = $null,
     [Parameter(Mandatory = $false)][string]$semver = (Get-SemVer)
   )
 
-  ($major, $minor, $patch, $pre, $prepatch) = ConvertTo-SemVer -semver $semver | ForEach-Object { ($_.Major, $_.Minor, $_.Patch, $_.Pre, $_.PrePatch) }
+  ($major, $minor, $patch, $pre, $prepatch, $build) = ConvertTo-SemVer -semver $semver | ForEach-Object { ($_.Major, $_.Minor, $_.Patch, $_.Pre, $_.PrePatch, $_.Build) }
   switch ($semverb) {
     "major" {
-      if (Test-String($pre)) {
+      if (Test-String $pre) {
         switch ($pre.ToLower()) {
           "alpha" {
             $pre = "beta"
-            $prepatch = "0"
+            $prepatch = ""
           }
           "beta" {
             $pre = "rc"
-            $prepatch = "0"
+            $prepatch = ""
           }
           Default {
             $pre = ""
@@ -81,7 +86,7 @@ function Set-SemVer {
       }
     }
     "minor" {
-      if (Test-String($pre)) {
+      if (Test-String $pre) {
         $prepatch++
       }
       else {
@@ -89,12 +94,19 @@ function Set-SemVer {
         $patch = 0
       }
     }
+    "build" {
+      if (Test-String $build) {
+        $build++
+      }
+    }
     Default {
-      if (Test-String($pre)) {
+      if (Test-String $pre) {
         $prepatch++
+        $build = ""
       }
       else {
         $patch++
+        $build = ""
       }
     }
   }
@@ -106,14 +118,14 @@ function Set-SemVer {
     Patch    = $patch
     Pre      = $pre
     PrePatch = $prepatch
+    Build    = $build
   } | Format-SemVerString
 
   $setcmd = {
     param(
       [Parameter(Mandatory)][string]$semver
     )
-    # git tag $semver
-    git describe --tags $semver
+    git tag $semver
   }
 
   if ($PSCmdlet.ShouldProcess($semver, "Set-SemVer")) {
@@ -133,7 +145,8 @@ $exportModuleMemberParams = @{
     'Get-SemVer',
     'Set-SemVer',
     'ConvertTo-Semver',
-    'Format-SemVerString'
+    'Format-SemVerString',
+    'Test-String'
   )
   Variable = @()
 }

@@ -19,7 +19,8 @@
     'Get-SemVer',
     'Set-SemVer',
     'ConvertTo-SemVer',
-    'Format-SemVerString'
+    'Format-SemVerString',
+    'Test-String'
   )
 
   # Cmdlets to export from this module

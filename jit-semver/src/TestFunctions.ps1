@@ -8,7 +8,7 @@
 #>
 function Test-String {
   param (
-    [Parameter(Mandatory = $false)][string]$val
+    [Parameter(Mandatory = $false, Position = 0)][string]$val
   )
 
   return -Not([System.String]::IsNullOrWhiteSpace($val))
@@ -52,12 +52,19 @@ function Test-SemVer {
 .INPUTS
     None
 .OUTPUTS
-    True if .semver.yml exists.
+    True if .semver.[yaml|yml] exists.
 #>
 function Test-SemVerOverride {
-  Test-Path ./.semver.yml
+  if (Test-Path ./.semver.yml) {
+    Write-Host -ForegroundColor Yellow "Please rename .semver.yml to .semver.yaml."
+  }
+  (Test-Path ./.semver.yml, ./.semver.yaml1 | Where-Object { $_ -eq $true }).Count -gt 0
 }
 
+<#
+.SYNOPSIS
+    ???
+#>
 function Test-Function {
   param(
     [Parameter(Mandatory)][scriptblock]$fun,
