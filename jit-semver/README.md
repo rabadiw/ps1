@@ -8,6 +8,11 @@ Management of software release requires a step to apply a version prior to distr
 A repository that is Git based and setup to use tagging for version management. This is not a hard rule, but stated to note that it is the common usecase used to design JIT-SemVer.
 
 ## Installation
+This module has been uploaded to [PowerShell Gallery](https://www.powershellgallery.com/packages/jit-semver). Follow these steps to install.
+```powershell
+PS> Install-Module -Name jit-semver -Scope CurrentUser
+PS> Import-Module -Name jit-semver
+```
 
 ## Basic Semantic Versioning theory
 The following is the taxonomy of versioning as noted by [Semantic Versioning 2.0.0](https://semver.org/). 
