@@ -10,7 +10,7 @@
     # Copyright statement for this module
     Copyright         = '(c) 2019-2019 Wael Rabadi, and contributors'
     # Description of the functionality provided by this module
-    Description       = 'Provides Semantic Version capabilites to manage the verison and git.'
+    Description       = 'Provides Semantic Version capabilities to manage your project version using git tag.'
     # Minimum version of the Windows PowerShell engine required by this module
     PowerShellVersion = '5.0'
 
