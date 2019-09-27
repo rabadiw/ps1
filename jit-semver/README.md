@@ -32,6 +32,13 @@ For repo without tags
 ```powershell
 PS> Get-SemVer
 1.0.0-alpha.1
+
+PS> Get-SemVer -IncludePrefix
+v1.0.0-alpha
+
+PS> Get-SemVer -IncludePrefix -Prefix "jit-semver/v"  
+jit-semver/v1.0.0-alpha
+
 ```
 
 ## How to set version
