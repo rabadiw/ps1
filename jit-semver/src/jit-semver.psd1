@@ -2,7 +2,7 @@
     # Script module or binary module file associated with this manifest.
     RootModule        = 'jit-semver.psm1'
     # Version number of this module.
-    ModuleVersion     = '1.0.0.0'
+    ModuleVersion     = '1.0.0'
     # ID used to uniquely identify this module
     GUID              = '469426b5-5d82-4d00-8293-a6fe544dbb0b'
     # Author of this module
@@ -49,7 +49,7 @@
             ReleaseNotes = 'https://github.com/rabadiw/ps1/blob/master/jit-semver/CHANGELOG.md'
 
             # OVERRIDE THIS FIELD FOR PUBLISHED RELEASES - LEAVE AT 'alpha' FOR CLONED/LOCAL REPO USAGE
-            Prerelease   = 'alpha'
+            # Prerelease   = 'alpha'
         }
     }
 }
