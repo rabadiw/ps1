@@ -1,5 +1,6 @@
 param([switch]$WhatIf = $false, [switch]$Force = $false, [switch]$Verbose = $false)
 
-$installDir = Split-Path $MyInvocation.MyCommand.Path -Parent
+$psd1 = Get-ChildItem -Path $PSScriptRoot -Filter *.psd1 -File -Recurse | Select-Object -First 1
 
-Import-Module $installDir\src\jit-semver.psd1 -Force
+# Expect .\src\jit-semver.psd1
+Import-Module $psd1 -Force
