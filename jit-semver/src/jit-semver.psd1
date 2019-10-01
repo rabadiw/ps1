@@ -50,7 +50,7 @@
             ReleaseNotes = 'https://github.com/rabadiw/ps1/blob/master/jit-semver/CHANGELOG.md'
 
             # OVERRIDE THIS FIELD FOR PUBLISHED RELEASES - LEAVE AT 'alpha' FOR CLONED/LOCAL REPO USAGE
-            # Prerelease   = 'alpha'
+            Prerelease   = 'alpha'
         }
     }
 }
