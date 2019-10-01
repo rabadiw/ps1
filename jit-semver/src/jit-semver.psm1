@@ -150,7 +150,7 @@ function Set-SemVer {
 
     if ($PSCmdlet.ShouldProcess($SemVersion, "Set-SemVer")) {
         # Ensure no outstanding git commits
-        if ($Force -or (Test-GitState)) {
+        if ($Force -or (Test-GitState -ShowMessage)) {
             Invoke-Command -ScriptBlock $setcmd
             Write-Information "Success! Version updated to $($setcmdPattern -f ($nextsemver, $Prefix, ''))."
         }
@@ -166,7 +166,8 @@ $exportModuleMemberParams = @{
         'Set-SemVer',
         'ConvertTo-Semver',
         'Format-SemVerString',
-        'Test-String'
+        'Test-String',
+        'Test-GitState'
     )
     Variable = @()
 }

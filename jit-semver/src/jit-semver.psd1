@@ -20,7 +20,8 @@
         'Set-SemVer',
         'ConvertTo-SemVer',
         'Format-SemVerString',
-        'Test-String'
+        'Test-String',
+        'Test-GitState'
     )
 
     # Cmdlets to export from this module
