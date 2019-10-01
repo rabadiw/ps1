@@ -38,7 +38,7 @@
     PrivateData       = @{
         PSData = @{
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags         = @('git', 'semver')
+            Tags         = @('git', 'jit-semver', 'powershell', 'semantic versioning')
 
             # A URL to the license for this module.
             LicenseUri   = 'https://github.com/rabadiw/ps1/blob/master/LICENSE.txt'
