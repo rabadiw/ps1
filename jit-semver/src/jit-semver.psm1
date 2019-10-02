@@ -2,7 +2,8 @@
 
 function ConvertTo-SemVer {
     param(
-        [Parameter(Mandatory = $false, ValueFromPipeline = $true)][string]$Version = (git describe --tags)
+        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
+        [ValidateNotNullOrEmpty()][string]$Version
     )
     [regex]$rx = "(?<prefix>.+)?(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)-?(?<pre>[a-zA-Z]+)?\.?(?<prepatch>\d+)?\+?(?<build>\d+)?"
     $curver = $rx.Match($Version)
@@ -39,35 +40,55 @@ function Get-SemVerOverride {
         ForEach-Object { @{ $_[0] = $_[1].Trim() } }
 }
 
+function Get-GitVersionHistory {
+    (git tag)
+}
+
+function Get-GitVersion {
+    (git describe --tags)
+}
+
+function Get-SemVerTree {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [string]
+        $Name
+    )
+    (git ls-tree HEAD | Where-Object { $_ -match $Name }) -split "\s" | Select-Object -Index 2
+}
+
 function Get-SemVer {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $false)][switch]$IncludePrefix,
-        [Parameter(Mandatory = $false)][ValidateNotNullOrEmpty()][string]$Prefix
+        [Parameter(Mandatory = $false)][switch]$ExcludePrefix,
+        [Parameter(Mandatory = $false)][ValidateNotNullOrEmpty()][string]$FilterPrefix
     )
-    $Version = $null
+    $ver = $null
     # TBD value
     #   if (Test-SemVerOverride) {
     #     $Version = (Get-SemVerOverride).Version | ConvertTo-SemVer
     #   }
 
     if ((Test-SemVer -ShowMessage)) {
-        # value of (git describe --tags)
-        $Version = ConvertTo-SemVer
+        if (Test-String $FilterPrefix) {
+            $ver = Get-GitVersionHistory | Where-Object { $_ -match $FilterPrefix } | Sort-Object -Bottom 1
+            if (-Not(Test-String $ver)) {
+                Write-Error "Failed to find '${FilterPrefix}'." -ErrorAction Stop
+            }
+        }
+        else {
+            # value of (git describe --tags)
+            $ver = Get-GitVersion
+        }
     }
     else {
         # default
-        Write-Warning "Defaulting to 1.0.0-alpha."
-        $Version = ConvertTo-SemVer -Version "1.0.0-alpha"
+        Write-Warning "Defaulting to v1.0.0-alpha."
+        $ver = "v1.0.0-alpha"
     }
 
-    if ($IncludePrefix) {
-        if (Test-String $Prefix) {
-            $Version.Prefix = $Prefix
-        }
-    }
-
-    $Version | Format-SemVerString -IncludePrefix:$IncludePrefix
+    ConvertTo-SemVer -Version $ver | Format-SemVerString -IncludePrefix:(-Not($ExcludePrefix))
 }
 
 function Set-SemVer {
@@ -75,7 +96,7 @@ function Set-SemVer {
 
     param(
         [Parameter(Mandatory = $false)][ValidateSet("major", "minor", "patch", "build")][string]$SemVerb = $null,
-        [Parameter(Mandatory = $false)][string]$Version = (Get-SemVer -IncludePrefix),
+        [Parameter(Mandatory = $false)][string]$Version = (Get-SemVer),
         [Parameter(Mandatory = $false)][string]$Message = "",
         [Parameter(Mandatory = $false)][string]$Prefix = "",
         [Parameter(Mandatory = $false)][switch]$Force = $false
@@ -138,9 +159,9 @@ function Set-SemVer {
         }
     }
 
-    $prefixString = $Prefix
-    if (-Not(Test-String $prefixString)) {
-        $prefixString = $verPrefix
+    $prefixString = $verPrefix
+    if (Test-String $Prefix) {
+        $prefixString = $Prefix
     }
 
     # new semver
