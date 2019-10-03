@@ -1,20 +1,24 @@
 # jit-psbuild Release History
 
-## 1.0.0-alpha - Oct. 2, 2019
+## v1.0.0-alpha - 2019-10-2
 
-- [FEATURE] - Get-DefaultSrcPath
-- [FEATURE] - Get-DefaultPSDistPath
-- [FEATURE] - Build-PSModule
-- [FEATURE] - Set-PSModuleVersion
-
-
+- [FEATURE] Get-DefaultSrcPath
+- [FEATURE] Get-DefaultPSDistPath
+- [FEATURE] Build-PSModule
+- [FEATURE] Set-PSModuleVersion
 
 ---
 **Legend**
 
-**[FEATURE]** - Added capabilites to the module.
+**[FEATURE]** - added capabilites.
 
-**[BREAKING]** - Changed exisiting behavior. These are few but sometimes unavoidable. However, could lead to breaking scripts that depend on it.
+**[BREAKING]** - changed exisiting features that could lead to breaking dependent scripts. These are few but sometimes unavoidable. 
 
-**[FIX]** - Updated existing behavior to fix bugs but does not change exisiting behavior.
+**[DEPRECATED]** - soon-to-be removed features.
+
+**[REMOVED]** - removed features.
+
+**[FIXED]** - updated existing features due to bugs but not breaking.
+
+**[SECURITY]** - addressed vulnerabilities.
 
