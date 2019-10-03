@@ -1,21 +1,30 @@
 # jit-semver Release History
 
-## 1.0.0-alpha.1 - Sept. 26, 2019
+## jit-semver/v1.0.0-alpha.2 - 2019-10-02
 
-- [FEATURE] - Get-SemVer
-- [FEATURE] - Set-SemVer
-- [FEATURE] - ConvertTo-SemVer
-- [FEATURE] - Format-SemVerString
-- [FEATURE] - Test-String
+- [FEATURE] Get-SemVer support multiple product versioning
+- [FEATURE] Set-SemVer extract message from CHANGELOG.md
 
+---
+## jit-semver/v1.0.0-alpha.1 - 2019-09-26
 
+- [FEATURE] Get-SemVer
+- [FEATURE] Set-SemVer
+- [FEATURE] ConvertTo-SemVer
+- [FEATURE] Format-SemVerString
+- [FEATURE] Test-String
 
 ---
 **Legend**
 
-**[FEATURE]** - Added capabilites to the module.
+**[FEATURE]** - added capabilites.
 
-**[BREAKING]** - Changed exisiting behavior. These are few but sometimes unavoidable. However, could lead to breaking scripts that depend on it.
+**[BREAKING]** - changed exisiting features that could lead to breaking dependent scripts. These are few but sometimes unavoidable. 
 
-**[FIX]** - Updated existing behavior to fix bugs but does not change exisiting behavior.
+**[DEPRECATED]** - soon-to-be removed features.
 
+**[REMOVED]** - removed features.
+
+**[FIXED]** - updated existing features due to bugs but not breaking.
+
+**[SECURITY]** - addressed vulnerabilities.

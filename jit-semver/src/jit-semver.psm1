@@ -1,4 +1,5 @@
 . $PSScriptRoot\TestFunctions.ps1
+. $PSScriptRoot\git.ps1
 
 function ConvertTo-SemVer {
     param(
@@ -38,24 +39,6 @@ function Get-SemVerOverride {
     Get-Content ./.semver.yml |
         ForEach-Object { , ($_ -split ':') } |
         ForEach-Object { @{ $_[0] = $_[1].Trim() } }
-}
-
-function Get-GitVersionHistory {
-    (git tag)
-}
-
-function Get-GitVersion {
-    (git describe --tags)
-}
-
-function Get-SemVerTree {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true, Position = 0)]
-        [string]
-        $Name
-    )
-    (git ls-tree HEAD | Where-Object { $_ -match $Name }) -split "\s" | Select-Object -Index 2
 }
 
 function Get-SemVer {
@@ -99,6 +82,7 @@ function Set-SemVer {
         [Parameter(Mandatory = $false)][string]$Version = (Get-SemVer),
         [Parameter(Mandatory = $false)][string]$Message = "",
         [Parameter(Mandatory = $false)][string]$Prefix = "",
+        [Parameter(Mandatory = $false)][string]$Tree = "",
         [Parameter(Mandatory = $false)][switch]$Force = $false
     )
 
@@ -175,12 +159,16 @@ function Set-SemVer {
         Prefix   = $prefixString
     } | Format-SemVerString -IncludePrefix
 
-    $setcmdPattern = "git tag '{0}'{1}"
+    $setcmdPattern = "git tag '{0}'{1}{2}"
     $msgString = ""
-    if (Test-String $Message) {
-        $msgString = " -m '${Message}'"
+    if(-Not(Test-String $Message)){
+        # derive from CHANGELOG.md
+        $Message = Get-GitChangeSummary -Version $Version
     }
-    $setcmd = [scriptblock]::Create($setcmdPattern -f ($nextsemver, $msgString))
+    if (Test-String $Message) {
+        $msgString = " -m '$($Message)'"
+    }
+    $setcmd = [scriptblock]::Create($setcmdPattern -f ($nextsemver, " ${Tree}".TrimEnd(), $msgString))
 
     if ($PSCmdlet.ShouldProcess($Version, "Set-SemVer")) {
         # Ensure no outstanding git commits
