@@ -74,16 +74,11 @@ function Get-SemVer {
     ConvertTo-SemVer -Version $ver | Format-SemVerString -IncludePrefix:(-Not($ExcludePrefix))
 }
 
-function Set-SemVer {
-    [cmdletbinding(SupportsShouldProcess = $true)]
-
+function Get-SemVerNext {
     param(
         [Parameter(Mandatory = $false)][ValidateSet("major", "minor", "patch", "build")][string]$SemVerb = $null,
         [Parameter(Mandatory = $false)][string]$Version = (Get-SemVer),
-        [Parameter(Mandatory = $false)][string]$Message = "",
-        [Parameter(Mandatory = $false)][string]$Prefix = "",
-        [Parameter(Mandatory = $false)][string]$Tree = "",
-        [Parameter(Mandatory = $false)][switch]$Force = $false
+        [Parameter(Mandatory = $false)][string]$Prefix = ""
     )
 
     ($major, $minor, $patch, $pre, $prepatch, $build, $verPrefix) = ConvertTo-SemVer -Version $Version |
@@ -149,7 +144,7 @@ function Set-SemVer {
     }
 
     # new semver
-    $nextsemver = @{
+    @{
         Major    = $major
         Minor    = $minor
         Patch    = $patch
@@ -158,38 +153,51 @@ function Set-SemVer {
         Build    = $build
         Prefix   = $prefixString
     } | Format-SemVerString -IncludePrefix
+}
+
+function Set-SemVer {
+    [cmdletbinding(SupportsShouldProcess = $true)]
+
+    param(
+        [Parameter(Mandatory = $false)][string]$Version = (Get-SemVerNext),
+        [Parameter(Mandatory = $false)][string]$Message = "",
+        [Parameter(Mandatory = $false)][string]$Tree = "",
+        [Parameter(Mandatory = $false)][switch]$Force = $false
+    )
 
     $setcmdPattern = "git tag '{0}'{1}{2}"
     $msgString = ""
-    if(-Not(Test-String $Message)){
-        # derive from CHANGELOG.md
-        $Message = Get-GitChangeSummary -Version $Version
-    }
+    # if(-Not(Test-String $Message)){
+    #     # derive from CHANGELOG.md
+    #     $Message = Get-GitChangeSummary -Version $Version
+    # }
     if (Test-String $Message) {
         $msgString = " -m '$($Message)'"
     }
-    $setcmd = [scriptblock]::Create($setcmdPattern -f ($nextsemver, " ${Tree}".TrimEnd(), $msgString))
+    $setcmd = [scriptblock]::Create($setcmdPattern -f ($Version, $msgString, " ${Tree}".TrimEnd()))
 
     if ($PSCmdlet.ShouldProcess($Version, "Set-SemVer")) {
         # Ensure no outstanding git commits
         if ($Force -or (Test-GitState -ShowMessage)) {
             Invoke-Command -ScriptBlock $setcmd
-            Write-Information "Success! Version updated to $($setcmdPattern -f ($nextsemver, $Prefix, ''))."
+            Write-Information "Success! Version updated to $($setcmd)." -InformationAction Continue
         }
     }
     else {
-        Write-Output "What if: $setcmd"
+        Write-Information "What if: $setcmd" -InformationAction Continue
     }
 }
 
 $exportModuleMemberParams = @{
     Function = @(
         'Get-SemVer',
+        'Get-SemVerNext',
         'Set-SemVer',
         'ConvertTo-Semver',
         'Format-SemVerString',
         'Test-String',
-        'Test-GitState'
+        'Test-GitState',
+        'Get-SemVerChangeSummary'
     )
     Variable = @()
 }

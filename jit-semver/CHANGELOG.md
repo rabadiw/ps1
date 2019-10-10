@@ -3,7 +3,9 @@
 ## jit-semver/v1.0.0-alpha.2 - 2019-10-02
 
 - [FEATURE] Get-SemVer support multiple product versioning
-- [FEATURE] Set-SemVer extract message from CHANGELOG.md
+- [FEATURE] Get-SemVerNext gets next version 
+- [FEATURE] Set-SemVer added message input
+- [FEATURE] Get-SemVerChangeSummary extract message from CHANGELOG.md
 
 ---
 ## jit-semver/v1.0.0-alpha.1 - 2019-09-26

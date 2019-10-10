@@ -17,11 +17,13 @@
     # Functions to export from this module
     FunctionsToExport = @(
         'Get-SemVer',
+        'Get-SemVerNext',
         'Set-SemVer',
         'ConvertTo-SemVer',
         'Format-SemVerString',
         'Test-String',
-        'Test-GitState'
+        'Test-GitState',
+        'Get-SemVerChangeSummary'
     )
 
     # Cmdlets to export from this module

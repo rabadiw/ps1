@@ -20,14 +20,50 @@ function Get-GitTree {
     ForEach-Object { @{ $_[3] = $_[2] } }
 }
 
-function Get-GitChangeSummary {
+function Get-SemVerChangeSummary {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $false, Position = 0, ValueFromPipeline = $true)]
-        [ValidateNotNullOrEmpty()][string]$Version=(Get-SemVer)
+        [ValidateNotNullOrEmpty()][string]$Version = (Get-SemVer),
+
+        # Specifies a path to one or more locations.
+        [Parameter(Mandatory = $false,
+            ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true,
+            HelpMessage = "Path to changelog file.")]
+        [ValidateNotNullOrEmpty()]
+        [string[]]
+        $ChangeLogPath = (Join-Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath "CHANGELOG.md"),
+
+        [Parameter(Mandatory = $false,
+            ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true,
+            HelpMessage = "Pattern to match the log header.")]
+        [ValidateNotNullOrEmpty()]
+        [scriptblock]
+        $HeaderPatternScript = { DefaultLogHeaderPattern $Version },
+
+        [Parameter(Mandatory = $false,
+            ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true,
+            HelpMessage = "Pattern to match the log content.")]
+        [ValidateNotNullOrEmpty()]
+        [scriptblock]$ContentPatternScript = { DefaultLogContentPattern }
     )
-    $logpath = Split-Path -Path $PSScriptRoot -Parent
-    $content = Get-Content -Path (Join-Path $logpath -ChildPath CHANGELOG.md) -Raw
-    $ver = [regex]::Escape($Version)
-    [regex]$rx = "(?s)##\s+?$ver[^\n]*(?<log>.*)---"
-    $rx.Match($content).Groups["log"].Value.Trim()
+    $content = Get-Content -Path $ChangeLogPath -Raw
+    [regex]$rx = "(?s)$(Invoke-Command $HeaderPatternScript)$(Invoke-Command $ContentPatternScript)"
+    Write-Verbose "Pattern used $rx"
+    $matches = $rx.Match($content)
+    return @{
+        Header  = $matches.Groups["header"].Value.Trim();
+        Content = $matches.Groups["log"].Value.Trim();
+    }
 }
+
+function DefaultLogHeaderPattern {
+    param(
+        [Parameter(Mandatory = $false, Position = 0, ValueFromPipeline = $true)]
+        [ValidateNotNullOrEmpty()][string]$Version = (Get-SemVer)
+    )
+    $ver = [regex]::Escape($Version)
+    "(?<header>##\s+${ver}.*?\n)"
+}
+
+function DefaultLogContentPattern { "(?<log>.*?)-{3}" }
