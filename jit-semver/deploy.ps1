@@ -5,10 +5,10 @@ function Deploy-JitSemVer {
 
     $NuGetApiKeyPath = "..\.psgkey"
 
-    $distPath = (Build-PSModule -Verbose:$Verbose -WhatIf:$WhatIf).DistPath
-    Set-PSModuleVersion -Path $distPath -Verbose:$Verbose -WhatIf:$WhatIf
+    $distPath = (Build-PSModule).DistPath
+    Set-PSModuleVersion -Path $distPath -Verbose:$Verbose
 
-    if (Not($WhatIf)) {
+    if (-Not($WhatIf)) {
         Publish-Module -Path $distPath -NuGetApiKey (get-content $NuGetApiKeyPath) -Verbose
     }
 }
