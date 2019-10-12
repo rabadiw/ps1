@@ -172,7 +172,7 @@ function Set-SemVer {
     #     $Message = Get-GitChangeSummary -Version $Version
     # }
     if (Test-String $Message) {
-        $msgString = " -m '${Message}'"
+        $msgString = " -m '$Version`n${Message}'"
     }
     $setcmd = [scriptblock]::Create($setcmdPattern -f ($Version, $msgString, " ${Tree}".TrimEnd()))
 
