@@ -45,7 +45,7 @@ function Get-SemVer {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)][switch]$ExcludePrefix,
-        [Parameter(Mandatory = $false)][ValidateNotNullOrEmpty()][string]$FilterPrefix
+        [Parameter(Mandatory = $false)][ValidateNotNullOrEmpty()][string]$Filter
     )
     $ver = $null
     # TBD value
@@ -54,10 +54,10 @@ function Get-SemVer {
     #   }
 
     if ((Test-SemVer -ShowMessage)) {
-        if (Test-String $FilterPrefix) {
-            $ver = Get-GitVersionHistory | Where-Object { $_ -match $FilterPrefix } | Sort-Object -Bottom 1
+        if (Test-String $Filter) {
+            $ver = Get-GitVersionHistory | Where-Object { $_ -match $Filter } | Sort-Object -Bottom 1
             if (-Not(Test-String $ver)) {
-                Write-Error "Failed to find '${FilterPrefix}'." -ErrorAction Stop
+                Write-Error "Failed to find '${Filter}'." -ErrorAction Stop
             }
         }
         else {
