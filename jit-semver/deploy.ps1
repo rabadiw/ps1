@@ -18,7 +18,7 @@ function Set-JitSemVer {
     param([switch]$WhatIf = $false, [switch]$Force = $false, [switch]$Verbose = $false)
 
     Set-SemVer `
-        -Message (Get-SemVerChangeSummary | Select-Object -ExpandProperty Content) `
+        -Message (Get-SemVerChangeSummary -Version (Get-SemVerNext) | Select-Object -ExpandProperty Content) `
         -Verbose:$Verbose `
         -WhatIf:$WhatIf
 }
