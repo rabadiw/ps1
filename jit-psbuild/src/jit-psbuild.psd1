@@ -16,8 +16,6 @@
 
     # Functions to export from this module
     FunctionsToExport = @(
-        'Get-DefaultSrcPath',
-        'Get-DefaultPSDistPath',
         'Build-PSModule',
         'Set-PSModuleVersion'
     )

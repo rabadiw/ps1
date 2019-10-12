@@ -1,32 +1,35 @@
-function Get-DefaultSrcPath {
-    Join-Path (Split-Path -Parent $PSScriptRoot) -ChildPath "src"
+function Get-DefaultPSSrcPath {
+    Get-ChildItem . -Directory -Filter src | Select-Object -First 1
 }
 
 function Get-DefaultPSDistPath {
-    $srcPath = Get-DefaultSrcPath
+    $srcPath = Get-DefaultPSSrcPath
     $moduleName = ( Get-ChildItem $srcPath -Filter *.psd1 | Select-Object -First 1).BaseName
-    Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "dist/$moduleName"
+    Join-Path -Path (Split-Path -Parent $srcPath) -ChildPath "dist/$moduleName"
 }
 
 function Build-PSModule {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $false)][string]$srcPath = (Get-DefaultSrcPath),
-        [Parameter(Mandatory = $false)][string]$distPath = (Get-DefaultPSDistPath)
+        [Parameter(Mandatory = $false)][ValidateNotNull()][scriptblock]$SrcPathScript = { Get-DefaultPSSrcPath },
+        [Parameter(Mandatory = $false)][ValidateNotNull()][scriptblock]$DistPathScript = { Get-DefaultPSDistPath }
     )
+    $srcPath = Invoke-Command -ScriptBlock $SrcPathScript
+    $distPath = Invoke-Command -ScriptBlock $DistPathScript
+
     if (-Not(Test-Path $srcPath)) {
         Write-Error "Source path not found '$srcPath'." -ErrorAction Stop
     }
     if (Test-Path $distPath) {
         Remove-Item $distPath -Force -Recurse
-        Write-Information "Removed $distPath." -InformationAction Continue
+        Write-Verbose "Removed $distPath."
     }
 
     Copy-Item $srcPath $distPath -Recurse
 
     @{
         SourcePath = $srcPath;
-        BuildPath  = $distPath
+        DistPath   = $distPath
     }
 }
 
@@ -43,7 +46,9 @@ function Set-PSModuleVersion {
         [Alias("PSPath")]
         [ValidateNotNullOrEmpty()]
         [string]
-        $Path = (Get-DefaultPSDistPath)
+        $Path = (Get-DefaultPSDistPath),
+        # Version to set for the module.
+        [Parameter(Mandatory = $false)][string]$Version = (Get-SemVer -ExcludePrefix)
     )
     if (-Not(Test-Path $Path)) {
         Write-Error "PSModule path not found $Path." -ErrorAction Stop
@@ -54,7 +59,7 @@ function Set-PSModuleVersion {
         Write-Error "No PSD1 file found within $Path." -ErrorAction Stop
     }
     # Ensure PSD1 is setup correctly
-    ($ver, $pre) = (Get-SemVer) -split '-'
+    ($ver, $pre) = $Version -split '-'
 
     # update version and clear Prerelease value
     Update-ModuleManifest -Path $psd1 -ModuleVersion $ver -Prerelease " "
@@ -63,14 +68,12 @@ function Set-PSModuleVersion {
     if (Test-String $pre) {
         $prever = $pre -replace "\.", ""
         Update-ModuleManifest -Path $psd1 -Prerelease $prever
-        Write-Information "Updated Prereelease to '${prever}' for '${psd1}'."
+        Write-Verbose "Updated Prereelease to '${prever}' for '${psd1}'."
     }
 }
 
 $exportModuleMemberParams = @{
     Function = @(
-        'Get-DefaultSrcPath',
-        'Get-DefaultPSDistPath',
         'Build-PSModule',
         'Set-PSModuleVersion'
     )
