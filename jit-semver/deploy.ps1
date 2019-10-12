@@ -13,7 +13,6 @@ function Deploy-JitSemVer {
     }
 }
 
-
 function Set-JitSemVer {
 
     param([switch]$WhatIf = $false, [switch]$Force = $false, [switch]$Verbose = $false)
