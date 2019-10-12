@@ -180,7 +180,7 @@ function Set-SemVer {
         # Ensure no outstanding git commits
         if ($Force -or (Test-GitState -ShowMessage)) {
             Invoke-Command -ScriptBlock $setcmd
-            Write-Information "Success! Version updated to $($setcmd)." -InformationAction Continue
+            Write-Verbose "Success! Version updated to $($setcmd)."
         }
     }
     else {

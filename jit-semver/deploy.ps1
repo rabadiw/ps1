@@ -1,10 +1,25 @@
 
 function Deploy-JitSemVer {
 
+    param([switch]$WhatIf = $false, [switch]$Force = $false, [switch]$Verbose = $false)
+
     $NuGetApiKeyPath = "..\.psgkey"
 
-    ($srcPath, $distPath) = Build-PSModule
-    Set-PSModuleVersion -Path $distPath
+    $distPath = (Build-PSModule -Verbose:$Verbose -WhatIf:$WhatIf).DistPath
+    Set-PSModuleVersion -Path $distPath -Verbose:$Verbose -WhatIf:$WhatIf
 
-    Publish-Module -Path $distPath -NuGetApiKey (get-content $NuGetApiKeyPath) -Verbose
+    if (Not($WhatIf)) {
+        Publish-Module -Path $distPath -NuGetApiKey (get-content $NuGetApiKeyPath) -Verbose
+    }
+}
+
+
+function Set-JitSemVer {
+
+    param([switch]$WhatIf = $false, [switch]$Force = $false, [switch]$Verbose = $false)
+
+    Set-SemVer `
+        -Message (Get-SemVerChangeSummary | Select-Object -ExpandProperty Content) `
+        -Verbose:$Verbose `
+        -WhatIf:$WhatIf
 }
