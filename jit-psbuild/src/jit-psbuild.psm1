@@ -4,6 +4,9 @@ function Get-DefaultPSSrcPath {
 
 function Get-DefaultPSDistPath {
     $srcPath = Get-DefaultPSSrcPath
+    if (-Not(Test-Path $srcPath)) {
+        Write-Error "Directory src not found at ${srcPath}." -ErrorAction Stop
+    }
     $moduleName = ( Get-ChildItem $srcPath -Filter *.psd1 | Select-Object -First 1).BaseName
     Join-Path -Path (Split-Path -Parent $srcPath) -ChildPath "dist/$moduleName"
 }
@@ -68,7 +71,7 @@ function Set-PSModuleVersion {
     if (Test-String $pre) {
         $prever = $pre -replace "\.", ""
         Update-ModuleManifest -Path $psd1 -Prerelease $prever
-        Write-Verbose "Updated Prereelease to '${prever}' for '${psd1}'."
+        Write-Verbose "Updated prerelease to '${prever}' for '${psd1}'."
     }
 }
 
