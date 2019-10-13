@@ -1,6 +1,6 @@
 # jit-psbuild Release History
 
-## v1.0.0-alpha - 2019-10-13
+## jit-psbuild/v1.0.0-alpha.1 - 2019-10-13
 
 - [FEATURE] Build-PSModule
 - [FEATURE] Set-PSModuleVersion
