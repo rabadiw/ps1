@@ -66,6 +66,7 @@ function Get-SemVer {
             $ver = Get-GitVersionHistory | Where-Object { $_ -match $Filter } | Sort-Object -Bottom 1
             if (-Not(Test-String $ver)) {
                 $ver = (Get-DefaultVersion -Verbose:$VerbosePreference.value__)
+                $ver = "$filter/$ver"
             }
         }
         else {
