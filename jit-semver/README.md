@@ -1,5 +1,5 @@
 # JIT-SemVer
-A PowerShell productivity scripts to help manage [Semantic Versioning 2.0.0](https://semver.org/) for any software that follows the git version practice.
+A PowerShell productivity module to help manage [Semantic Versioning 2.0.0](https://semver.org/) for any software that follows the git version practice.
 
 # Purpose 
 Management of software release requires a step to apply a version prior to distribution. Along with automation, the preferred approach to versioning is to enable the pipeline to manage the application of the version as a step in the pipeline. A common example is the iterative progression from alpha to beta to rc to release. Continuous Deliver (CI) tools today heavily use the command line, and, as such, depend on scripts that can be run via the commandline. 
@@ -31,29 +31,33 @@ See the current version. This command will return the version based on the follo
 For repo without tags
 ```powershell
 PS> Get-SemVer
-1.0.0-alpha.1
+v/1.0.0-alpha.1
 
-PS> Get-SemVer -IncludePrefix
-v1.0.0-alpha
+PS> Get-SemVer -ExcludePrefix
+1.0.0-alpha
 
-PS> Get-SemVer -IncludePrefix -Prefix "jit-semver/v"  
+# Advanced topic
+# Managage multiple products in a monolithic repo
+PS> Get-SemVer -Filter "jit-semver"
 jit-semver/v1.0.0-alpha
 
+PS> Get-SemVer -Filter "jit-psbuild" -Verbose
+VERBOSE: Defaulting to v1.0.0-alpha.
+jit-psbuild/v1.0.0-alpha
 ```
 
-## How to set version
-To increment version to the next value, Set-SemVer takes a semverb parameter with options of Major|Minor|Patch|Build. The parameter -SemVerb default value is patch.
+## How to get next version
+To increment version to the next value, `Get-SemVerNext` takes a semverb parameter with options of Major|Minor|Patch|Build. The parameter -SemVerb default value is patch.
 
-Upon initial setting, the following will set the version to `v1.0.0-alpha.1`. The first 2 statements in the output are informational as no tag has been found. The `-Forece` parameter will still apply the tag and ignore any outstanding commits. Therefore, it is important to commit your changes and avoid using the `-Forece` paramater.
+Upon initial setting, the following will set the version to `v1.0.0-alpha.1`. 
 
 ```powershell
-PS> Set-SemVer        
-No tags were found. See 'git tag' for instructions on how to add a tag.
-Defaulting to 1.0.0-alpha.
-Success! Version updated to git tag 'v1.0.0-alpha'.
+PS> Get-SemVerNext -Verbose
+WARNING: No version found. See 'Set-SemVer' for instructions on how to tag a version.
+v1.0.0-alpha
 ```
 
-Given a version of 1.0.0-alpha. Here's what each `Set-SemVer` would produce. 
+Given a version of 1.0.0-alpha. Here's what each `Get-SemVerNext` would produce. 
 
 ```powershell
 # To increment version by patch
@@ -74,18 +78,48 @@ PS> Set-SemVer -SemVerb build
 v1.0.0-alpha+1
 ```
 
-Increment version by patch but also provide a prefix and message. This will tag git with `jit-semver/v1.0.0-alpha.1`.
+## How to set version
+To set the version, the `Set-SemVer` cmdlet can help and it takes a few paramters. 
+- `-Version` flag takes a version input or the default value of `Get-SemVerNext`. 
+- `-Title` flag takes a value to set the tag version value to or default to the `-Version` value. 
+- `-Message` flag takes a message input to set the details of the tag or the default value of blank. 
+- `-Force` flag will apply the version and ignore any outstanding commits. It is important to commit your changes and avoid using this flag.
+- `-WhatIf` flag allows to test a condition.
+
+Set the version by specifing the title and message.
 ```powershell
-PS> Set-SemVer -WhatIf -Message "A description for the tag" -Prefix "jit-semver/"
-What if: Performing the operation "Set-SemVer" on target "1.0.0-alpha".
-What if: git tag 'jit-semver/v1.0.0-alpha.1' -m 'A description for the tag'
+PS> Set-SemVer -Title "v1.0.0 Alpha" -Message "Release summary goes here" -WhatIf
+What if: Performing the operation "Set-SemVer" on target "v1.0.0-alpha".
+What if: git tag 'v1.0.0-alpha' -m 'v1.0.0 Alpha
+Release summary goes here'
 ```
 
-You also have the ability to test conditions using -WhatIf parameter.
+To manage the next version to be set.
 ```powershell
-PS> set-semver -semver "1.0.0-alpha.1+101" -SemVerb build -WhatIf                                         
-What if: Performing the operation "Set-SemVer" on target "1.0.0-alpha.1+101".
-What if: git tag 1.0.0-alpha.1+102
+PS> Set-SemVer -Title "v1.0.0 Alpha" -Message "Release summary goes here" -Version (Get-SemVerNext -Version "1.0.0-alpha.1+100" -SemVerb Build -Prefix "jit-semver/v") -WhatIf
+What if: Performing the operation "Set-SemVer" on target "jit-semver/v1.0.0-alpha.1+101".
+What if: git tag 'jit-semver/v1.0.0-alpha.1+101' -m 'v1.0.0 Alpha
+Release summary goes here'
+```
+
+## How to manage the version message or summary.
+If you use a `CHANGELOG.md` file to summarize changes in your repo. The `Get-SemVerChangeSummary` cmdlet can help and it takes a few parameters.
+- `-Version` takes a version input or the default value of `Get-SemVer`.
+- `-ChangeLogPath` path to changelog file or defaults to git top level folder `CHANGELOG.md` file. 
+- `-HeaderPatternScript` pattern ScriptBlock to match the log header.
+- `-ContentPatternScript` pattern ScriptBlock to match the log content.
+
+See [changelog-template.md](templates/changelog-template.md) for a starter template. The heaer and content patterns default to this templates structure. To use a different file structure, set those flags to the desired scriptblocks.
+
+```powershell
+PS> Get-SemVerChangeSummary
+Name                           Value
+----                           -----
+Content                        - [FEATURE] Get-SemVer support multiple…
+Header                         ## jit-semver/v1.0.0-alpha.2 - 2019-10-13
+
+# Get only the content
+PS> Get-SemVerChangeSummary | Select-Object -ExpandProperty Content
 ```
 
 ## Additional Functions

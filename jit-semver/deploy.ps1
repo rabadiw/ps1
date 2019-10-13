@@ -17,8 +17,13 @@ function Set-JitSemVer {
 
     param([switch]$WhatIf = $false, [switch]$Force = $false, [switch]$Verbose = $false)
 
+    $semverprefix = "jit-semver"
+    $semver = Get-SemVerNext -Version (Get-SemVer -Filter $semverprefix) -Prefix "$semverprefix/v"
+    $msg = Get-SemVerChangeSummary -ChangeLogPath ./CHANGELOG.md -Version $semver | Select-Object -ExpandProperty Content
+
     Set-SemVer `
-        -Message (Get-SemVerChangeSummary -Version (Get-SemVerNext) | Select-Object -ExpandProperty Content) `
+        -Version $semver `
+        -Message $msg `
         -Verbose:$Verbose `
         -WhatIf:$WhatIf
 }
