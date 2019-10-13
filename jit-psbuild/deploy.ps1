@@ -6,9 +6,11 @@ function Deploy-JitPSBuild {
     # hashtable to array, not needed but good to know
     # ($distPath, $srcPath) = [string[]]((Build-PSModule).Values | Out-String -Stream)
     $distPath = (Build-PSModule).DistPath
-    Set-PSModuleVersion -Path $distPath
+    Set-PSModuleVersion -Version (Get-SemVer -Filter "jit-semver" -ExcludePrefix) -Path $distPath -Verbose:$Verbose
 
-    Publish-Module -Path $distPath -NuGetApiKey (get-content $NuGetApiKeyPath) -Verbose
+    if (-Not($WhatIf)) {
+        Publish-Module -Path $distPath -NuGetApiKey (get-content $NuGetApiKeyPath) -Verbose
+    }
 }
 
 function Set-JitPSBuildVer {
