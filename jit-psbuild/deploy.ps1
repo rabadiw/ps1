@@ -1,12 +1,15 @@
 
 function Deploy-JitPSBuild {
 
+    param([switch]$WhatIf = $false, [switch]$Force = $false, [switch]$Verbose = $false)
+    
     $NuGetApiKeyPath = "..\.psgkey"
+    $semverprefix = "jit-psbuild"
 
     # hashtable to array, not needed but good to know
     # ($distPath, $srcPath) = [string[]]((Build-PSModule).Values | Out-String -Stream)
     $distPath = (Build-PSModule).DistPath
-    Set-PSModuleVersion -Version (Get-SemVer -Filter "jit-semver" -ExcludePrefix) -Path $distPath -Verbose:$Verbose
+    Set-PSModuleVersion -Version (Get-SemVer -Filter $semverprefix -ExcludePrefix) -Path $distPath -Verbose:$Verbose
 
     if (-Not($WhatIf)) {
         Publish-Module -Path $distPath -NuGetApiKey (get-content $NuGetApiKeyPath) -Verbose
