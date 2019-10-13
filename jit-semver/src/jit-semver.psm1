@@ -41,6 +41,15 @@ function Get-SemVerOverride {
         ForEach-Object { @{ $_[0] = $_[1].Trim() } }
 }
 
+function Get-DefaultVersion {
+    [CmdletBinding()]
+    param()
+
+    # default
+    Write-Verbose "Defaulting to v1.0.0-alpha."
+    "v1.0.0-alpha"
+}
+
 function Get-SemVer {
     [CmdletBinding()]
     param (
@@ -52,12 +61,11 @@ function Get-SemVer {
     #   if (Test-SemVerOverride) {
     #     $Version = (Get-SemVerOverride).Version | ConvertTo-SemVer
     #   }
-
     if ((Test-SemVer -ShowMessage)) {
         if (Test-String $Filter) {
             $ver = Get-GitVersionHistory | Where-Object { $_ -match $Filter } | Sort-Object -Bottom 1
             if (-Not(Test-String $ver)) {
-                Write-Error "Failed to find '${Filter}'." -ErrorAction Stop
+                $ver = (Get-DefaultVersion -Verbose:$VerbosePreference.value__)
             }
         }
         else {
@@ -67,8 +75,7 @@ function Get-SemVer {
     }
     else {
         # default
-        Write-Warning "Defaulting to v1.0.0-alpha."
-        $ver = "v1.0.0-alpha"
+        $ver = (Get-DefaultVersion -Verbose:$VerbosePreference.value__)
     }
 
     ConvertTo-SemVer -Version $ver | Format-SemVerString -IncludePrefix:(-Not($ExcludePrefix))
@@ -159,22 +166,25 @@ function Set-SemVer {
     [cmdletbinding(SupportsShouldProcess = $true)]
 
     param(
-        [Parameter(Mandatory = $false)][string]$Version = (Get-SemVerNext),
+        [Parameter(Mandatory = $false, Position = 0)][string]$Version = (Get-SemVerNext),
+        [Parameter(Mandatory = $false)][string]$Title = "",
         [Parameter(Mandatory = $false)][string]$Message = "",
-        [Parameter(Mandatory = $false)][string]$Tree = "",
         [Parameter(Mandatory = $false)][switch]$Force = $false
     )
 
-    $setcmdPattern = "git tag '{0}'{1}{2}"
+    $setcmdPattern = "git tag '{0}'{1}"
     $msgString = ""
     # if(-Not(Test-String $Message)){
     #     # derive from CHANGELOG.md
     #     $Message = Get-GitChangeSummary -Version $Version
     # }
     if (Test-String $Message) {
-        $msgString = " -m '$Version`n${Message}'"
+        if (-Not(Test-String $Title)) {
+            $Title = $Version
+        }
+        $msgString = " -m '$Title`n${Message}'"
     }
-    $setcmd = [scriptblock]::Create($setcmdPattern -f ($Version, $msgString, " ${Tree}".TrimEnd()))
+    $setcmd = [scriptblock]::Create($setcmdPattern -f ($Version, $msgString))
 
     if ($PSCmdlet.ShouldProcess($Version, "Set-SemVer")) {
         # Ensure no outstanding git commits
