@@ -25,11 +25,11 @@ function Write-Tree {
     )
 
     # $PathDepth = ((Resolve-Path $Path) | select-string -Pattern '[\\/]' -AllMatches).Matches.Count
-    # Write-Host (Resolve-Path -Path $Path -Relative)
+    # Write-Output (Resolve-Path -Path $Path -Relative)
     # foreach ($item in (Get-ChildItem $Path -Directory -Recurse -Depth 2)) {
     #     $depth = 0
     #     $depth = ((Resolve-Path $item) | select-string -Pattern '[\\/]' -AllMatches).Matches.Count - $PathDepth - 1
-    #     Write-Host "$('    '*($depth))|--$($item.Name)"
+    #     Write-Output "$('    '*($depth))|--$($item.Name)"
     # }
 
     # ├
@@ -78,7 +78,7 @@ function Write-Tree {
                     $prefix += "   "
                 }
             }
-            Write-Host "$prefix├──$($_.Name)", $PathDepth, "($bars)"
+            Write-Output "$prefix├──$($_.Name) $PathDepth ($bars)"
             Write-Tree-Recursive -Path $_ -PathDepth ($PathDepth + 1) -Depth $Depth -bars $b -Exclude $Exclude
         }
 
@@ -93,13 +93,13 @@ function Write-Tree {
                     $prefix += "   "
                 }
             }
-            Write-Host "$prefix└──$($_.Name)", $PathDepth, "($bars)"
+            Write-Output "$prefix└──$($_.Name) $PathDepth ($bars)"
             Write-Tree-Recursive -Path $_ -PathDepth ($PathDepth + 1) -Depth $Depth -bars $bars -Exclude $Exclude
         }
     }
 
     # root path
-    Write-Host (Resolve-Path -Path $Path -Relative)
+    Write-Output (Resolve-Path -Path $Path -Relative)
     # children recursive
     Write-Tree-Recursive -Path $Path -PathDepth 0 -Depth $Depth -Exclude $Exclude
 }
