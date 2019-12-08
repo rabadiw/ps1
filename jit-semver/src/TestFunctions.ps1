@@ -29,7 +29,7 @@ function Test-GitState {
     )
     $hasDiff = ( git diff-index HEAD -- ).Count -gt 0
     if ($hasDiff -and $ShowMessage) {
-        Write-Error "You have uncommitted git changes."
+        Write-Warning "You have uncommitted git changes." 
     }
     -Not($hasDiff)
 }
