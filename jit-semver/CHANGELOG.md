@@ -1,8 +1,8 @@
 # jit-semver Release History
 
-## jit-semver/v1.0.0-alpha.2 - 2019-10-02
+## jit-semver/v1.0.0-alpha.2 - 2019-10-13
 
-- [FEATURE] Get-SemVer support multiple product versioning
+- [FEATURE] Get-SemVer support multiple products, title, filter by product
 - [FEATURE] Get-SemVerNext gets next version 
 - [FEATURE] Set-SemVer added message input
 - [FEATURE] Get-SemVerChangeSummary extract message from CHANGELOG.md

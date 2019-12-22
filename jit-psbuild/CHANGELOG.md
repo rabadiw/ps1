@@ -1,9 +1,7 @@
 # jit-psbuild Release History
 
-## v1.0.0-alpha - 2019-10-2
+## jit-psbuild/v1.0.0-alpha.1 - 2019-10-13
 
-- [FEATURE] Get-DefaultSrcPath
-- [FEATURE] Get-DefaultPSDistPath
 - [FEATURE] Build-PSModule
 - [FEATURE] Set-PSModuleVersion
 

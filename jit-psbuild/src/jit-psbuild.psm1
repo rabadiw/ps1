@@ -72,7 +72,7 @@ function Set-PSModuleVersion {
     if (Test-String $pre) {
         $prever = $pre -replace "\.", ""
         Update-ModuleManifest -Path $psd1 -Prerelease $prever
-        Write-Verbose "Updated Prereelease to '${prever}' for '${psd1}'."
+        Write-Verbose "Updated prerelease to '${prever}' for '${psd1}'."
     }
 }
 

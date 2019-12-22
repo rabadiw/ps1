@@ -16,7 +16,7 @@ function Get-GitTree {
     )
     # only directories and return the hash of KV
     git ls-tree -d HEAD | Where-Object { $_ -match $Name } |
-    ForEach-Object { ,($_ -split "\s") } |
+    ForEach-Object { , ($_ -split "\s") } |
     ForEach-Object { @{ $_[3] = $_[2] } }
 }
 
@@ -28,11 +28,12 @@ function Get-SemVerChangeSummary {
 
         # Specifies a path to one or more locations.
         [Parameter(Mandatory = $false,
-            ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true,
+            ValueFromPipeline = $true, 
+            ValueFromPipelineByPropertyName = $true,
             HelpMessage = "Path to changelog file.")]
         [ValidateNotNullOrEmpty()]
-        [string[]]
-        $ChangeLogPath = (Join-Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath "CHANGELOG.md"),
+        [string]
+        $ChangeLogPath = (Get-ChildItem (git rev-parse --show-toplevel) "CHANGELOG.md"),
 
         [Parameter(Mandatory = $false,
             ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true,
@@ -47,6 +48,9 @@ function Get-SemVerChangeSummary {
         [ValidateNotNullOrEmpty()]
         [scriptblock]$ContentPatternScript = { DefaultLogContentPattern }
     )
+    if (-Not(Test-String $ChangeLogPath) -or -Not(Test-Path $ChangeLogPath)) {
+        Write-Error "ChangeLog file not found at $ChangeLogPath." -ErrorAction Stop
+    }
     $content = Get-Content -Path $ChangeLogPath -Raw
     [regex]$rx = "(?s)$(Invoke-Command $HeaderPatternScript)$(Invoke-Command $ContentPatternScript)"
     Write-Verbose "Pattern used $rx"

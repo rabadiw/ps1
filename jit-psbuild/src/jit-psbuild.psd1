@@ -10,7 +10,7 @@
     # Copyright statement for this module
     Copyright         = '(c) 2019-2019 Wael Rabadi, and contributors'
     # Description of the functionality provided by this module
-    Description       = 'Provides PowerShell Module capabilities to build and deploy using jit-semver version management.'
+    Description       = 'Provides PowerShell Module capabilities to build and verion a PSModule using jit-semver version management.'
     # Minimum version of the Windows PowerShell engine required by this module
     PowerShellVersion = '5.0'
 

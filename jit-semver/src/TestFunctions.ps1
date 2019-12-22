@@ -51,7 +51,7 @@ function Test-SemVer {
 
     $hasVer = ( git tag ).Count -gt 0
     if ($ShowMessage -and -Not($hasVer)) {
-        Write-Warning "No tags were found. See 'git tag' for instructions on how to add a tag."
+        Write-Warning "No version found. See 'Set-SemVer' for instructions on how to tag a version."
     }
     return $hasVer
 }
