@@ -104,4 +104,4 @@ function Write-Tree {
     Write-Tree-Recursive -Path $Path -PathDepth 0 -Depth $Depth -Exclude $Exclude
 }
 
-Write-Tree "${PSScriptRoot}\.." -Exclude "objects"
+# Write-Tree "${PSScriptRoot}\.." -Exclude "objects"
