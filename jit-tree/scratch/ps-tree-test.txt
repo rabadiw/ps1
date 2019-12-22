@@ -1,0 +1,476 @@
+
+
+C:\Users\Wael\proj\github.com\PowerShell\PowerShell
+ ├──[0||Not-Last] .dependabot/
+ ├──[0||Not-Last] .devcontainer/
+ │  └──[1|0|Last] fedora30/
+ ├──[0||Not-Last] .github/
+ │  ├──[1|0|Not-Last] Images/
+ │  └──[1|0|Last] ISSUE_TEMPLATE/
+ ├──[0||Not-Last] .poshchan/
+ ├──[0||Not-Last] .vscode/
+ ├──[0||Not-Last] .vsts-ci/
+ │  └──[1|0|Last] templates/
+ ├──[0||Not-Last] assets/
+ │  └──[1|0|Last] GroupPolicy/
+ ├──[0||Not-Last] CHANGELOG/
+ ├──[0||Not-Last] demos/
+ │  ├──[1|0|Not-Last] Apache/
+ │  │  └──[2|0, 1|Last] Apache/
+ │  ├──[1|0|Not-Last] Azure/
+ │  ├──[1|0|Not-Last] crontab/
+ │  │  └──[2|0, 1|Last] CronTab/
+ │  ├──[1|0|Not-Last] Docker-PowerShell/
+ │  ├──[1|0|Not-Last] DSC/
+ │  ├──[1|0|Not-Last] powershellget/
+ │  ├──[1|0|Not-Last] python/
+ │  ├──[1|0|Not-Last] rest/
+ │  ├──[1|0|Not-Last] SystemD/
+ │  │  └──[2|0, 1|Last] SystemD/
+ │  └──[1|0|Last] WindowsPowerShellModules/
+ ├──[0||Not-Last] docker/
+ │  └──[1|0|Last] tests/
+ │     └──[2|0|Last] Templates/
+ │        ├──[3|0|Not-Last] centos7/
+ │        ├──[3|0|Not-Last] debian.9/
+ │        ├──[3|0|Not-Last] fedora28/
+ │        ├──[3|0|Not-Last] fxdependent-centos7/
+ │        ├──[3|0|Not-Last] fxdependent-debian.9/
+ │        ├──[3|0|Not-Last] fxdependent-dotnetsdk-latest/
+ │        ├──[3|0|Not-Last] fxdependent-fedora28/
+ │        ├──[3|0|Not-Last] fxdependent-opensuse42.3/
+ │        ├──[3|0|Not-Last] fxdependent-ubuntu16.04/
+ │        ├──[3|0|Not-Last] fxdependent-ubuntu18.04/
+ │        ├──[3|0|Not-Last] opensuse42.3/
+ │        ├──[3|0|Not-Last] ubuntu16.04/
+ │        └──[3|0|Last] ubuntu18.04/
+ ├──[0||Not-Last] docs/
+ │  ├──[1|0|Not-Last] building/
+ │  ├──[1|0|Not-Last] cmdlet-example/
+ │  │  └──[2|0, 1|Last] Images/
+ │  ├──[1|0|Not-Last] community/
+ │  ├──[1|0|Not-Last] debugging/
+ │  ├──[1|0|Not-Last] dev-process/
+ │  ├──[1|0|Not-Last] git/
+ │  ├──[1|0|Not-Last] host-powershell/
+ │  │  └──[2|0, 1|Last] sample/
+ │  │     └──[3|0, 1|Last] MyApp/
+ │  ├──[1|0|Not-Last] learning-powershell/
+ │  ├──[1|0|Not-Last] maintainers/
+ │  │  └──[2|0, 1|Last] Images/
+ │  └──[1|0|Last] testing-guidelines/
+ │     └──[2|0|Last] Images/
+ ├──[0||Not-Last] src/
+ │  ├──[1|0|Not-Last] libpsl-native/
+ │  ├──[1|0|Not-Last] Microsoft.Management.Infrastructure.CimCmdlets/
+ │  │  ├──[2|0, 1|Not-Last] bin/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  ├──[2|0, 1|Not-Last] obj/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  └──[2|0, 1|Last] resources/
+ │  ├──[1|0|Not-Last] Microsoft.Management.UI.Internal/
+ │  │  ├──[2|0, 1|Not-Last] commandHelpers/
+ │  │  ├──[2|0, 1|Not-Last] HelpWindow/
+ │  │  ├──[2|0, 1|Not-Last] ManagementList/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Common/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] CommonControls/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] FilterCore/
+ │  │  │  │  ├──[4|0, 1, 2, 3|Not-Last] FilterExpressionNodes/
+ │  │  │  │  ├──[4|0, 1, 2, 3|Not-Last] FilterRules/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] ValidationRules/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] FilterProviders/
+ │  │  │  └──[3|0, 1, 2|Last] ManagementList/
+ │  │  ├──[2|0, 1|Not-Last] resources/
+ │  │  │  └──[3|0, 1, 2|Last] Graphics/
+ │  │  ├──[2|0, 1|Not-Last] ShowCommand/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Controls/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] ImageButton/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] ViewModel/
+ │  │  │  └──[3|0, 1, 2|Last] Windows/
+ │  │  └──[2|0, 1|Last] themes/
+ │  ├──[1|0|Not-Last] Microsoft.PowerShell.Commands.Diagnostics/
+ │  │  ├──[2|0, 1|Not-Last] bin/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  ├──[2|0, 1|Not-Last] CoreCLR/
+ │  │  ├──[2|0, 1|Not-Last] obj/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  └──[2|0, 1|Last] resources/
+ │  ├──[1|0|Not-Last] Microsoft.PowerShell.Commands.Management/
+ │  │  ├──[2|0, 1|Not-Last] bin/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  ├──[2|0, 1|Not-Last] cimSupport/
+ │  │  │  └──[3|0, 1, 2|Last] cmdletization/
+ │  │  │     └──[4|0, 1, 2|Last] cim/
+ │  │  ├──[2|0, 1|Not-Last] commands/
+ │  │  │  └──[3|0, 1, 2|Last] management/
+ │  │  ├──[2|0, 1|Not-Last] obj/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  ├──[2|0, 1|Not-Last] resources/
+ │  │  └──[2|0, 1|Last] singleshell/
+ │  │     └──[3|0, 1|Last] installer/
+ │  ├──[1|0|Not-Last] Microsoft.PowerShell.Commands.Utility/
+ │  │  ├──[2|0, 1|Not-Last] bin/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  ├──[2|0, 1|Not-Last] commands/
+ │  │  │  └──[3|0, 1, 2|Last] utility/
+ │  │  │     ├──[4|0, 1, 2|Not-Last] FormatAndOutput/
+ │  │  │     │  ├──[5|0, 1, 2, 4|Not-Last] common/
+ │  │  │     │  ├──[5|0, 1, 2, 4|Not-Last] format-hex/
+ │  │  │     │  ├──[5|0, 1, 2, 4|Not-Last] format-list/
+ │  │  │     │  ├──[5|0, 1, 2, 4|Not-Last] format-object/
+ │  │  │     │  ├──[5|0, 1, 2, 4|Not-Last] format-table/
+ │  │  │     │  ├──[5|0, 1, 2, 4|Not-Last] format-wide/
+ │  │  │     │  ├──[5|0, 1, 2, 4|Not-Last] out-file/
+ │  │  │     │  ├──[5|0, 1, 2, 4|Not-Last] OutGridView/
+ │  │  │     │  ├──[5|0, 1, 2, 4|Not-Last] out-printer/
+ │  │  │     │  └──[5|0, 1, 2, 4|Last] out-string/
+ │  │  │     ├──[4|0, 1, 2|Not-Last] ShowCommand/
+ │  │  │     ├──[4|0, 1, 2|Not-Last] trace/
+ │  │  │     └──[4|0, 1, 2|Last] WebCmdlet/
+ │  │  │        ├──[5|0, 1, 2|Not-Last] Common/
+ │  │  │        └──[5|0, 1, 2|Last] CoreCLR/
+ │  │  ├──[2|0, 1|Not-Last] obj/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  ├──[2|0, 1|Not-Last] resources/
+ │  │  └──[2|0, 1|Last] singleshell/
+ │  │     └──[3|0, 1|Last] installer/
+ │  ├──[1|0|Not-Last] Microsoft.PowerShell.ConsoleHost/
+ │  │  ├──[2|0, 1|Not-Last] bin/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  ├──[2|0, 1|Not-Last] host/
+ │  │  │  └──[3|0, 1, 2|Last] msh/
+ │  │  ├──[2|0, 1|Not-Last] obj/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  ├──[2|0, 1|Not-Last] resources/
+ │  │  ├──[2|0, 1|Not-Last] singleshell/
+ │  │  │  └──[3|0, 1, 2|Last] installer/
+ │  │  └──[2|0, 1|Last] WindowsTaskbarJumpList/
+ │  ├──[1|0|Not-Last] Microsoft.PowerShell.CoreCLR.Eventing/
+ │  │  ├──[2|0, 1|Not-Last] bin/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  ├──[2|0, 1|Not-Last] DotNetCode/
+ │  │  │  └──[3|0, 1, 2|Last] Eventing/
+ │  │  │     └──[4|0, 1, 2|Last] Reader/
+ │  │  ├──[2|0, 1|Not-Last] obj/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  └──[2|0, 1|Last] resources/
+ │  ├──[1|0|Not-Last] Microsoft.PowerShell.GlobalTool.Shim/
+ │  ├──[1|0|Not-Last] Microsoft.PowerShell.LocalAccounts/
+ │  │  ├──[2|0, 1|Not-Last] LocalAccounts/
+ │  │  │  └──[3|0, 1, 2|Last] Commands/
+ │  │  └──[2|0, 1|Last] resources/
+ │  ├──[1|0|Not-Last] Microsoft.PowerShell.MarkdownRender/
+ │  │  ├──[2|0, 1|Not-Last] bin/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  └──[2|0, 1|Last] obj/
+ │  │     └──[3|0, 1|Last] Debug/
+ │  │        └──[4|0, 1|Last] netcoreapp3.1/
+ │  ├──[1|0|Not-Last] Microsoft.PowerShell.ScheduledJob/
+ │  │  ├──[2|0, 1|Not-Last] commands/
+ │  │  └──[2|0, 1|Last] resources/
+ │  ├──[1|0|Not-Last] Microsoft.PowerShell.SDK/
+ │  │  ├──[2|0, 1|Not-Last] bin/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  └──[2|0, 1|Last] obj/
+ │  │     └──[3|0, 1|Last] Debug/
+ │  │        └──[4|0, 1|Last] netcoreapp3.1/
+ │  ├──[1|0|Not-Last] Microsoft.PowerShell.Security/
+ │  │  ├──[2|0, 1|Not-Last] bin/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  ├──[2|0, 1|Not-Last] obj/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  ├──[2|0, 1|Not-Last] resources/
+ │  │  ├──[2|0, 1|Not-Last] security/
+ │  │  └──[2|0, 1|Last] singleshell/
+ │  │     └──[3|0, 1|Last] installer/
+ │  ├──[1|0|Not-Last] Microsoft.WSMan.Management/
+ │  │  ├──[2|0, 1|Not-Last] bin/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  ├──[2|0, 1|Not-Last] obj/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  └──[2|0, 1|Last] resources/
+ │  ├──[1|0|Not-Last] Microsoft.WSMan.Runtime/
+ │  │  ├──[2|0, 1|Not-Last] bin/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  └──[2|0, 1|Last] obj/
+ │  │     └──[3|0, 1|Last] Debug/
+ │  │        └──[4|0, 1|Last] netcoreapp3.1/
+ │  ├──[1|0|Not-Last] Modules/
+ │  │  ├──[2|0, 1|Not-Last] Shared/
+ │  │  │  └──[3|0, 1, 2|Last] Microsoft.PowerShell.Host/
+ │  │  ├──[2|0, 1|Not-Last] Unix/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Microsoft.PowerShell.Management/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Microsoft.PowerShell.Security/
+ │  │  │  └──[3|0, 1, 2|Last] Microsoft.PowerShell.Utility/
+ │  │  └──[2|0, 1|Last] Windows/
+ │  │     ├──[3|0, 1|Not-Last] CimCmdlets/
+ │  │     ├──[3|0, 1|Not-Last] Microsoft.PowerShell.Diagnostics/
+ │  │     ├──[3|0, 1|Not-Last] Microsoft.PowerShell.Management/
+ │  │     ├──[3|0, 1|Not-Last] Microsoft.PowerShell.Security/
+ │  │     ├──[3|0, 1|Not-Last] Microsoft.PowerShell.Utility/
+ │  │     ├──[3|0, 1|Not-Last] Microsoft.WSMan.Management/
+ │  │     └──[3|0, 1|Last] PSDiagnostics/
+ │  ├──[1|0|Not-Last] powershell/
+ │  ├──[1|0|Not-Last] PowerShell.Core.Instrumentation/
+ │  ├──[1|0|Not-Last] powershell-native/
+ │  ├──[1|0|Not-Last] powershell-unix/
+ │  │  ├──[2|0, 1|Not-Last] bin/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  └──[2|0, 1|Last] obj/
+ │  │     └──[3|0, 1|Last] Debug/
+ │  │        └──[4|0, 1|Last] netcoreapp3.1/
+ │  ├──[1|0|Not-Last] powershell-win-core/
+ │  │  ├──[2|0, 1|Not-Last] bin/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  ├──[2|0, 1|Not-Last] obj/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  └──[2|0, 1|Last] Properties/
+ │  ├──[1|0|Not-Last] ResGen/
+ │  ├──[1|0|Not-Last] Schemas/
+ │  │  └──[2|0, 1|Last] PSMaml/
+ │  ├──[1|0|Not-Last] signing/
+ │  ├──[1|0|Not-Last] System.Management.Automation/
+ │  │  ├──[2|0, 1|Not-Last] bin/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  ├──[2|0, 1|Not-Last] cimSupport/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] cmdletization/
+ │  │  │  │  ├──[4|0, 1, 2, 3|Not-Last] cim/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] xml/
+ │  │  │  │     └──[5|0, 1, 2, 3|Last] CoreCLR/
+ │  │  │  └──[3|0, 1, 2|Last] other/
+ │  │  ├──[2|0, 1|Not-Last] CoreCLR/
+ │  │  ├──[2|0, 1|Not-Last] DscSupport/
+ │  │  ├──[2|0, 1|Not-Last] engine/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] COM/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] ComInterop/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] CommandCompletion/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] debugger/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] ExperimentalFeature/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] hostifaces/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] interpreter/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] lang/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] interface/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Modules/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] parser/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] remoting/
+ │  │  │  │  ├──[4|0, 1, 2, 3|Not-Last] client/
+ │  │  │  │  ├──[4|0, 1, 2, 3|Not-Last] commands/
+ │  │  │  │  ├──[4|0, 1, 2, 3|Not-Last] common/
+ │  │  │  │  │  └──[5|0, 1, 2, 3, 4|Last] WireDataFormat/
+ │  │  │  │  ├──[4|0, 1, 2, 3|Not-Last] fanin/
+ │  │  │  │  ├──[4|0, 1, 2, 3|Not-Last] host/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] server/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] runtime/
+ │  │  │  │  ├──[4|0, 1, 2, 3|Not-Last] Binding/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] Operations/
+ │  │  │  └──[3|0, 1, 2|Last] WinRT/
+ │  │  ├──[2|0, 1|Not-Last] FormatAndOutput/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] common/
+ │  │  │  │  ├──[4|0, 1, 2, 3|Not-Last] DisplayDatabase/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] Utilities/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] DefaultFormatters/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] format-default/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] out-console/
+ │  │  │  └──[3|0, 1, 2|Last] out-textInterface/
+ │  │  ├──[2|0, 1|Not-Last] help/
+ │  │  ├──[2|0, 1|Not-Last] logging/
+ │  │  │  └──[3|0, 1, 2|Last] eventlog/
+ │  │  ├──[2|0, 1|Not-Last] namespaces/
+ │  │  ├──[2|0, 1|Not-Last] obj/
+ │  │  │  └──[3|0, 1, 2|Last] Debug/
+ │  │  │     └──[4|0, 1, 2|Last] netcoreapp3.1/
+ │  │  ├──[2|0, 1|Not-Last] resources/
+ │  │  ├──[2|0, 1|Not-Last] security/
+ │  │  ├──[2|0, 1|Not-Last] singleshell/
+ │  │  │  └──[3|0, 1, 2|Last] config/
+ │  │  └──[2|0, 1|Last] utils/
+ │  │     ├──[3|0, 1|Not-Last] perfCounters/
+ │  │     └──[3|0, 1|Last] tracing/
+ │  └──[1|0|Last] TypeCatalogGen/
+ ├──[0||Not-Last] test/
+ │  ├──[1|0|Not-Last] common/
+ │  │  └──[2|0, 1|Last] markdown/
+ │  ├──[1|0|Not-Last] docker/
+ │  │  └──[2|0, 1|Last] networktest/
+ │  ├──[1|0|Not-Last] hosting/
+ │  ├──[1|0|Not-Last] nanoserver/
+ │  ├──[1|0|Not-Last] packaging/
+ │  │  └──[2|0, 1|Last] windows/
+ │  ├──[1|0|Not-Last] powershell/
+ │  │  ├──[2|0, 1|Not-Last] engine/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Api/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] assets/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Basic/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Cdxml/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] assets/
+ │  │  │  │     └──[5|0, 1, 2, 3|Last] CimTest/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] COM/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] ETS/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] ExperimentalFeature/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] assets/
+ │  │  │  │     └──[5|0, 1, 2, 3|Last] ExpTest/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Formatting/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Help/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] assets/
+ │  │  │  │     └──[5|0, 1, 2, 3|Last] HelpURI/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Job/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Module/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] assets/
+ │  │  │  │     └──[5|0, 1, 2, 3|Last] testmodulerunspace/
+ │  │  │  │        ├──[6|0, 1, 2, 3|Not-Last] ModuleWithDependencies2/
+ │  │  │  │        │  └──[7|0, 1, 2, 3, 6|Last] 2.0/
+ │  │  │  │        └──[6|0, 1, 2, 3|Last] NestedRequiredModule1/
+ │  │  │  │           └──[7|0, 1, 2, 3|Last] 2.5/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] ParameterBinding/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Remoting/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] ResourceValidation/
+ │  │  │  └──[3|0, 1, 2|Last] Security/
+ │  │  ├──[2|0, 1|Not-Last] Host/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] assets/
+ │  │  │  └──[3|0, 1, 2|Last] TabCompletion/
+ │  │  ├──[2|0, 1|Not-Last] Installer/
+ │  │  ├──[2|0, 1|Not-Last] Language/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Classes/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Interop/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] DotNet/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Operators/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Parser/
+ │  │  │  └──[3|0, 1, 2|Last] Scripting/
+ │  │  │     ├──[4|0, 1, 2|Not-Last] Debugging/
+ │  │  │     ├──[4|0, 1, 2|Not-Last] en-US/
+ │  │  │     ├──[4|0, 1, 2|Not-Last] fr-FR/
+ │  │  │     ├──[4|0, 1, 2|Not-Last] NativeExecution/
+ │  │  │     └──[4|0, 1, 2|Last] newbase/
+ │  │  │        ├──[5|0, 1, 2|Not-Last] en-US/
+ │  │  │        └──[5|0, 1, 2|Last] fr-FR/
+ │  │  ├──[2|0, 1|Not-Last] Modules/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] CimCmdlets/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Microsoft.PowerShell.Core/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Microsoft.PowerShell.Diagnostics/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] assets/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Microsoft.Powershell.Host/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Microsoft.PowerShell.LocalAccounts/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Microsoft.PowerShell.Management/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] assets/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Microsoft.PowerShell.Security/
+ │  │  │  │  ├──[4|0, 1, 2, 3|Not-Last] Modules/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] TestData/
+ │  │  │  │     └──[5|0, 1, 2, 3|Last] CatalogTestData/
+ │  │  │  │        └──[6|0, 1, 2, 3|Last] UserConfigProv/
+ │  │  │  │           └──[7|0, 1, 2, 3|Last] DSCResources/
+ │  │  │  │              ├──[8|0, 1, 2, 3|Not-Last] scriptdsc/
+ │  │  │  │              ├──[8|0, 1, 2, 3|Not-Last] UserConfigProviderModVersion1/
+ │  │  │  │              ├──[8|0, 1, 2, 3|Not-Last] UserConfigProviderModVersion2/
+ │  │  │  │              └──[8|0, 1, 2, 3|Last] UserConfigProviderModVersion3/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Microsoft.PowerShell.Utility/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] assets/
+ │  │  │  │     ├──[5|0, 1, 2, 3|Not-Last] de-DE/
+ │  │  │  │     └──[5|0, 1, 2, 3|Last] en-US/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] Microsoft.WSMan.Management/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] PackageManagement/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] PowerShellGet/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] PSDesiredStateConfiguration/
+ │  │  │  │  └──[4|0, 1, 2, 3|Last] assets/
+ │  │  │  │     └──[5|0, 1, 2, 3|Last] dsc/
+ │  │  │  │        ├──[6|0, 1, 2, 3|Not-Last] BaseRegistration/
+ │  │  │  │        └──[6|0, 1, 2, 3|Last] schema/
+ │  │  │  │           ├──[7|0, 1, 2, 3|Not-Last] MSFT_LogResource/
+ │  │  │  │           ├──[7|0, 1, 2, 3|Not-Last] MSFT_nxArchiveResource/
+ │  │  │  │           ├──[7|0, 1, 2, 3|Not-Last] MSFT_nxEnvironmentResource/
+ │  │  │  │           ├──[7|0, 1, 2, 3|Not-Last] MSFT_nxFileLineResource/
+ │  │  │  │           ├──[7|0, 1, 2, 3|Not-Last] MSFT_nxFileResource/
+ │  │  │  │           ├──[7|0, 1, 2, 3|Not-Last] MSFT_nxGroupResource/
+ │  │  │  │           ├──[7|0, 1, 2, 3|Not-Last] MSFT_nxPackageResource/
+ │  │  │  │           ├──[7|0, 1, 2, 3|Not-Last] MSFT_nxScriptResource/
+ │  │  │  │           ├──[7|0, 1, 2, 3|Not-Last] MSFT_nxServiceResource/
+ │  │  │  │           ├──[7|0, 1, 2, 3|Not-Last] MSFT_nxSshAuthorizedKeysResource/
+ │  │  │  │           └──[7|0, 1, 2, 3|Last] MSFT_nxUserResource/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] PSDiagnostics/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] PSReadLine/
+ │  │  │  └──[3|0, 1, 2|Last] ThreadJob/
+ │  │  ├──[2|0, 1|Not-Last] Provider/
+ │  │  └──[2|0, 1|Last] SDK/
+ │  │     └──[3|0, 1|Last] assets/
+ │  ├──[1|0|Not-Last] shebang/
+ │  ├──[1|0|Not-Last] tools/
+ │  │  ├──[2|0, 1|Not-Last] CodeCoverageAutomation/
+ │  │  ├──[2|0, 1|Not-Last] Modules/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] HelpersCommon/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] HelpersDebugger/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] HelpersHostCS/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] HelpersLanguage/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] HelpersRemoting/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] HelpersSecurity/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] HttpListener/
+ │  │  │  ├──[3|0, 1, 2|Not-Last] PSSysLog/
+ │  │  │  └──[3|0, 1, 2|Last] WebListener/
+ │  │  ├──[2|0, 1|Not-Last] OpenCover/
+ │  │  ├──[2|0, 1|Not-Last] TestExe/
+ │  │  ├──[2|0, 1|Not-Last] TestService/
+ │  │  └──[2|0, 1|Last] WebListener/
+ │  │     ├──[3|0, 1|Not-Last] Controllers/
+ │  │     ├──[3|0, 1|Not-Last] Models/
+ │  │     └──[3|0, 1|Last] Views/
+ │  │        ├──[4|0, 1|Not-Last] Encoding/
+ │  │        ├──[4|0, 1|Not-Last] Home/
+ │  │        ├──[4|0, 1|Not-Last] Multipart/
+ │  │        ├──[4|0, 1|Not-Last] Redirect/
+ │  │        └──[4|0, 1|Last] Shared/
+ │  └──[1|0|Last] xUnit/
+ │     ├──[2|0|Not-Last] Asserts/
+ │     ├──[2|0|Not-Last] bin/
+ │     │  └──[3|0, 2|Last] Debug/
+ │     │     └──[4|0, 2|Last] netcoreapp3.1/
+ │     ├──[2|0|Not-Last] csharp/
+ │     └──[2|0|Last] obj/
+ │        └──[3|0|Last] Debug/
+ │           └──[4|0|Last] netcoreapp3.1/
+ └──[0||Last] tools/
+    ├──[1||Not-Last] credScan/
+    ├──[1||Not-Last] failingTests/
+    ├──[1||Not-Last] packaging/
+    │  └──[2|1|Last] projects/
+    │     ├──[3|1|Not-Last] nuget/
+    │     └──[3|1|Last] reference/
+    │        ├──[4|1|Not-Last] Microsoft.PowerShell.Commands.Utility/
+    │        └──[4|1|Last] System.Management.Automation/
+    ├──[1||Not-Last] performance/
+    ├──[1||Not-Last] releaseBuild/
+    │  ├──[2|1|Not-Last] azureDevOps/
+    │  │  ├──[3|1, 2|Not-Last] AzArtifactFeed/
+    │  │  └──[3|1, 2|Last] templates/
+    │  ├──[2|1|Not-Last] Images/
+    │  │  ├──[3|1, 2|Not-Last] GenericLinuxFiles/
+    │  │  ├──[3|1, 2|Not-Last] microsoft_powershell_alpine3/
+    │  │  ├──[3|1, 2|Not-Last] microsoft_powershell_centos7/
+    │  │  ├──[3|1, 2|Not-Last] microsoft_powershell_ubuntu16.04/
+    │  │  ├──[3|1, 2|Not-Last] microsoft_powershell_ubuntu18.04/
+    │  │  └──[3|1, 2|Last] microsoft_powershell_windowsservercore/
+    │  └──[2|1|Last] macOS/
+    ├──[1||Not-Last] ResxGen/
+    ├──[1||Not-Last] terms/
+    ├──[1||Not-Last] windows/
+    └──[1||Last] Xml/

@@ -1,0 +1,476 @@
+Folder PATH listing for volume OS
+Volume serial number is 3CB4-BD37
+C:\USERS\WAEL\PROJ\GITHUB.COM\POWERSHELL\POWERSHELL
+├───.dependabot
+├───.devcontainer
+│   └───fedora30
+├───.github
+│   ├───Images
+│   └───ISSUE_TEMPLATE
+├───.poshchan
+├───.vscode
+├───.vsts-ci
+│   └───templates
+├───assets
+│   └───GroupPolicy
+├───CHANGELOG
+├───demos
+│   ├───Apache
+│   │   └───Apache
+│   ├───Azure
+│   ├───crontab
+│   │   └───CronTab
+│   ├───Docker-PowerShell
+│   ├───DSC
+│   ├───powershellget
+│   ├───python
+│   ├───rest
+│   ├───SystemD
+│   │   └───SystemD
+│   └───WindowsPowerShellModules
+├───docker
+│   └───tests
+│       └───Templates
+│           ├───centos7
+│           ├───debian.9
+│           ├───fedora28
+│           ├───fxdependent-centos7
+│           ├───fxdependent-debian.9
+│           ├───fxdependent-dotnetsdk-latest
+│           ├───fxdependent-fedora28
+│           ├───fxdependent-opensuse42.3
+│           ├───fxdependent-ubuntu16.04
+│           ├───fxdependent-ubuntu18.04
+│           ├───opensuse42.3
+│           ├───ubuntu16.04
+│           └───ubuntu18.04
+├───docs
+│   ├───building
+│   ├───cmdlet-example
+│   │   └───Images
+│   ├───community
+│   ├───debugging
+│   ├───dev-process
+│   ├───git
+│   ├───host-powershell
+│   │   └───sample
+│   │       └───MyApp
+│   ├───learning-powershell
+│   ├───maintainers
+│   │   └───Images
+│   └───testing-guidelines
+│       └───Images
+├───src
+│   ├───libpsl-native
+│   ├───Microsoft.Management.Infrastructure.CimCmdlets
+│   │   ├───bin
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   ├───obj
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   └───resources
+│   ├───Microsoft.Management.UI.Internal
+│   │   ├───commandHelpers
+│   │   ├───HelpWindow
+│   │   ├───ManagementList
+│   │   │   ├───Common
+│   │   │   ├───CommonControls
+│   │   │   ├───FilterCore
+│   │   │   │   ├───FilterExpressionNodes
+│   │   │   │   ├───FilterRules
+│   │   │   │   └───ValidationRules
+│   │   │   ├───FilterProviders
+│   │   │   └───ManagementList
+│   │   ├───resources
+│   │   │   └───Graphics
+│   │   ├───ShowCommand
+│   │   │   ├───Controls
+│   │   │   │   └───ImageButton
+│   │   │   ├───ViewModel
+│   │   │   └───Windows
+│   │   └───themes
+│   ├───Microsoft.PowerShell.Commands.Diagnostics
+│   │   ├───bin
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   ├───CoreCLR
+│   │   ├───obj
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   └───resources
+│   ├───Microsoft.PowerShell.Commands.Management
+│   │   ├───bin
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   ├───cimSupport
+│   │   │   └───cmdletization
+│   │   │       └───cim
+│   │   ├───commands
+│   │   │   └───management
+│   │   ├───obj
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   ├───resources
+│   │   └───singleshell
+│   │       └───installer
+│   ├───Microsoft.PowerShell.Commands.Utility
+│   │   ├───bin
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   ├───commands
+│   │   │   └───utility
+│   │   │       ├───FormatAndOutput
+│   │   │       │   ├───common
+│   │   │       │   ├───format-hex
+│   │   │       │   ├───format-list
+│   │   │       │   ├───format-object
+│   │   │       │   ├───format-table
+│   │   │       │   ├───format-wide
+│   │   │       │   ├───out-file
+│   │   │       │   ├───out-printer
+│   │   │       │   ├───out-string
+│   │   │       │   └───OutGridView
+│   │   │       ├───ShowCommand
+│   │   │       ├───trace
+│   │   │       └───WebCmdlet
+│   │   │           ├───Common
+│   │   │           └───CoreCLR
+│   │   ├───obj
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   ├───resources
+│   │   └───singleshell
+│   │       └───installer
+│   ├───Microsoft.PowerShell.ConsoleHost
+│   │   ├───bin
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   ├───host
+│   │   │   └───msh
+│   │   ├───obj
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   ├───resources
+│   │   ├───singleshell
+│   │   │   └───installer
+│   │   └───WindowsTaskbarJumpList
+│   ├───Microsoft.PowerShell.CoreCLR.Eventing
+│   │   ├───bin
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   ├───DotNetCode
+│   │   │   └───Eventing
+│   │   │       └───Reader
+│   │   ├───obj
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   └───resources
+│   ├───Microsoft.PowerShell.GlobalTool.Shim
+│   ├───Microsoft.PowerShell.LocalAccounts
+│   │   ├───LocalAccounts
+│   │   │   └───Commands
+│   │   └───resources
+│   ├───Microsoft.PowerShell.MarkdownRender
+│   │   ├───bin
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   └───obj
+│   │       └───Debug
+│   │           └───netcoreapp3.1
+│   ├───Microsoft.PowerShell.ScheduledJob
+│   │   ├───commands
+│   │   └───resources
+│   ├───Microsoft.PowerShell.SDK
+│   │   ├───bin
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   └───obj
+│   │       └───Debug
+│   │           └───netcoreapp3.1
+│   ├───Microsoft.PowerShell.Security
+│   │   ├───bin
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   ├───obj
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   ├───resources
+│   │   ├───security
+│   │   └───singleshell
+│   │       └───installer
+│   ├───Microsoft.WSMan.Management
+│   │   ├───bin
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   ├───obj
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   └───resources
+│   ├───Microsoft.WSMan.Runtime
+│   │   ├───bin
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   └───obj
+│   │       └───Debug
+│   │           └───netcoreapp3.1
+│   ├───Modules
+│   │   ├───Shared
+│   │   │   └───Microsoft.PowerShell.Host
+│   │   ├───Unix
+│   │   │   ├───Microsoft.PowerShell.Management
+│   │   │   ├───Microsoft.PowerShell.Security
+│   │   │   └───Microsoft.PowerShell.Utility
+│   │   └───Windows
+│   │       ├───CimCmdlets
+│   │       ├───Microsoft.PowerShell.Diagnostics
+│   │       ├───Microsoft.PowerShell.Management
+│   │       ├───Microsoft.PowerShell.Security
+│   │       ├───Microsoft.PowerShell.Utility
+│   │       ├───Microsoft.WSMan.Management
+│   │       └───PSDiagnostics
+│   ├───powershell
+│   ├───powershell-native
+│   ├───powershell-unix
+│   │   ├───bin
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   └───obj
+│   │       └───Debug
+│   │           └───netcoreapp3.1
+│   ├───powershell-win-core
+│   │   ├───bin
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   ├───obj
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   └───Properties
+│   ├───PowerShell.Core.Instrumentation
+│   ├───ResGen
+│   ├───Schemas
+│   │   └───PSMaml
+│   ├───signing
+│   ├───System.Management.Automation
+│   │   ├───bin
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   ├───cimSupport
+│   │   │   ├───cmdletization
+│   │   │   │   ├───cim
+│   │   │   │   └───xml
+│   │   │   │       └───CoreCLR
+│   │   │   └───other
+│   │   ├───CoreCLR
+│   │   ├───DscSupport
+│   │   ├───engine
+│   │   │   ├───COM
+│   │   │   ├───ComInterop
+│   │   │   ├───CommandCompletion
+│   │   │   ├───debugger
+│   │   │   ├───ExperimentalFeature
+│   │   │   ├───hostifaces
+│   │   │   ├───interpreter
+│   │   │   ├───lang
+│   │   │   │   └───interface
+│   │   │   ├───Modules
+│   │   │   ├───parser
+│   │   │   ├───remoting
+│   │   │   │   ├───client
+│   │   │   │   ├───commands
+│   │   │   │   ├───common
+│   │   │   │   │   └───WireDataFormat
+│   │   │   │   ├───fanin
+│   │   │   │   ├───host
+│   │   │   │   └───server
+│   │   │   ├───runtime
+│   │   │   │   ├───Binding
+│   │   │   │   └───Operations
+│   │   │   └───WinRT
+│   │   ├───FormatAndOutput
+│   │   │   ├───common
+│   │   │   │   ├───DisplayDatabase
+│   │   │   │   └───Utilities
+│   │   │   ├───DefaultFormatters
+│   │   │   ├───format-default
+│   │   │   ├───out-console
+│   │   │   └───out-textInterface
+│   │   ├───help
+│   │   ├───logging
+│   │   │   └───eventlog
+│   │   ├───namespaces
+│   │   ├───obj
+│   │   │   └───Debug
+│   │   │       └───netcoreapp3.1
+│   │   ├───resources
+│   │   ├───security
+│   │   ├───singleshell
+│   │   │   └───config
+│   │   └───utils
+│   │       ├───perfCounters
+│   │       └───tracing
+│   └───TypeCatalogGen
+├───test
+│   ├───common
+│   │   └───markdown
+│   ├───docker
+│   │   └───networktest
+│   ├───hosting
+│   ├───nanoserver
+│   ├───packaging
+│   │   └───windows
+│   ├───powershell
+│   │   ├───engine
+│   │   │   ├───Api
+│   │   │   │   └───assets
+│   │   │   ├───Basic
+│   │   │   ├───Cdxml
+│   │   │   │   └───assets
+│   │   │   │       └───CimTest
+│   │   │   ├───COM
+│   │   │   ├───ETS
+│   │   │   ├───ExperimentalFeature
+│   │   │   │   └───assets
+│   │   │   │       └───ExpTest
+│   │   │   ├───Formatting
+│   │   │   ├───Help
+│   │   │   │   └───assets
+│   │   │   │       └───HelpURI
+│   │   │   ├───Job
+│   │   │   ├───Module
+│   │   │   │   └───assets
+│   │   │   │       └───testmodulerunspace
+│   │   │   │           ├───ModuleWithDependencies2
+│   │   │   │           │   └───2.0
+│   │   │   │           └───NestedRequiredModule1
+│   │   │   │               └───2.5
+│   │   │   ├───ParameterBinding
+│   │   │   ├───Remoting
+│   │   │   ├───ResourceValidation
+│   │   │   └───Security
+│   │   ├───Host
+│   │   │   ├───assets
+│   │   │   └───TabCompletion
+│   │   ├───Installer
+│   │   ├───Language
+│   │   │   ├───Classes
+│   │   │   ├───Interop
+│   │   │   │   └───DotNet
+│   │   │   ├───Operators
+│   │   │   ├───Parser
+│   │   │   └───Scripting
+│   │   │       ├───Debugging
+│   │   │       ├───en-US
+│   │   │       ├───fr-FR
+│   │   │       ├───NativeExecution
+│   │   │       └───newbase
+│   │   │           ├───en-US
+│   │   │           └───fr-FR
+│   │   ├───Modules
+│   │   │   ├───CimCmdlets
+│   │   │   ├───Microsoft.PowerShell.Core
+│   │   │   ├───Microsoft.PowerShell.Diagnostics
+│   │   │   │   └───assets
+│   │   │   ├───Microsoft.Powershell.Host
+│   │   │   ├───Microsoft.PowerShell.LocalAccounts
+│   │   │   ├───Microsoft.PowerShell.Management
+│   │   │   │   └───assets
+│   │   │   ├───Microsoft.PowerShell.Security
+│   │   │   │   ├───Modules
+│   │   │   │   └───TestData
+│   │   │   │       └───CatalogTestData
+│   │   │   │           └───UserConfigProv
+│   │   │   │               └───DSCResources
+│   │   │   │                   ├───scriptdsc
+│   │   │   │                   ├───UserConfigProviderModVersion1
+│   │   │   │                   ├───UserConfigProviderModVersion2
+│   │   │   │                   └───UserConfigProviderModVersion3
+│   │   │   ├───Microsoft.PowerShell.Utility
+│   │   │   │   └───assets
+│   │   │   │       ├───de-DE
+│   │   │   │       └───en-US
+│   │   │   ├───Microsoft.WSMan.Management
+│   │   │   ├───PackageManagement
+│   │   │   ├───PowerShellGet
+│   │   │   ├───PSDesiredStateConfiguration
+│   │   │   │   └───assets
+│   │   │   │       └───dsc
+│   │   │   │           ├───BaseRegistration
+│   │   │   │           └───schema
+│   │   │   │               ├───MSFT_LogResource
+│   │   │   │               ├───MSFT_nxArchiveResource
+│   │   │   │               ├───MSFT_nxEnvironmentResource
+│   │   │   │               ├───MSFT_nxFileLineResource
+│   │   │   │               ├───MSFT_nxFileResource
+│   │   │   │               ├───MSFT_nxGroupResource
+│   │   │   │               ├───MSFT_nxPackageResource
+│   │   │   │               ├───MSFT_nxScriptResource
+│   │   │   │               ├───MSFT_nxServiceResource
+│   │   │   │               ├───MSFT_nxSshAuthorizedKeysResource
+│   │   │   │               └───MSFT_nxUserResource
+│   │   │   ├───PSDiagnostics
+│   │   │   ├───PSReadLine
+│   │   │   └───ThreadJob
+│   │   ├───Provider
+│   │   └───SDK
+│   │       └───assets
+│   ├───shebang
+│   ├───tools
+│   │   ├───CodeCoverageAutomation
+│   │   ├───Modules
+│   │   │   ├───HelpersCommon
+│   │   │   ├───HelpersDebugger
+│   │   │   ├───HelpersHostCS
+│   │   │   ├───HelpersLanguage
+│   │   │   ├───HelpersRemoting
+│   │   │   ├───HelpersSecurity
+│   │   │   ├───HttpListener
+│   │   │   ├───PSSysLog
+│   │   │   └───WebListener
+│   │   ├───OpenCover
+│   │   ├───TestExe
+│   │   ├───TestService
+│   │   └───WebListener
+│   │       ├───Controllers
+│   │       ├───Models
+│   │       └───Views
+│   │           ├───Encoding
+│   │           ├───Home
+│   │           ├───Multipart
+│   │           ├───Redirect
+│   │           └───Shared
+│   └───xUnit
+│       ├───Asserts
+│       ├───bin
+│       │   └───Debug
+│       │       └───netcoreapp3.1
+│       ├───csharp
+│       └───obj
+│           └───Debug
+│               └───netcoreapp3.1
+└───tools
+    ├───credScan
+    ├───failingTests
+    ├───packaging
+    │   └───projects
+    │       ├───nuget
+    │       └───reference
+    │           ├───Microsoft.PowerShell.Commands.Utility
+    │           └───System.Management.Automation
+    ├───performance
+    ├───releaseBuild
+    │   ├───azureDevOps
+    │   │   ├───AzArtifactFeed
+    │   │   └───templates
+    │   ├───Images
+    │   │   ├───GenericLinuxFiles
+    │   │   ├───microsoft_powershell_alpine3
+    │   │   ├───microsoft_powershell_centos7
+    │   │   ├───microsoft_powershell_ubuntu16.04
+    │   │   ├───microsoft_powershell_ubuntu18.04
+    │   │   └───microsoft_powershell_windowsservercore
+    │   └───macOS
+    ├───ResxGen
+    ├───terms
+    ├───windows
+    └───Xml

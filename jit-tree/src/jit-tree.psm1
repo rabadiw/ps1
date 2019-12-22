@@ -52,7 +52,10 @@ function Write-Tree {
 
         # $dirInfo = ("[{0}, {1}] {2}/" -f $dir.Mode, $dir.LastWriteTime.ToString("s") , $dir.Name)
 
-        if ($DebugPreference.value__) { $debugDisplay = "[$level|$($bars -join ', ')] " }
+        if ($DebugPreference.value__) {
+            $lastMsg = ("Not-Last", "Last")
+            $debugDisplay = "[$level|$($bars -join ', ')|$($lastMsg[$isLast])] "
+        }
         if ($DisplayHint) { $dirAttr = "[$($dir.Mode), $($dir.LastWriteTime.ToString("s"))]  " }
 
         #     # Write-Output (@{Depth = "$prefix $($dir.Name)"; Mode = $dir.Mode }) | select -Property Depth, Mode
@@ -64,7 +67,7 @@ function Write-Tree {
     }
 
     function GetChildItem($path) {
-        return Get-ChildItem $Path -Directory -Exclude $Exclude | Sort-Object -Property Name -Descending
+        return Get-ChildItem $path -Directory -Exclude $Exclude | Sort-Object -Property Name -Descending
     }
 
     # Guard path
@@ -81,8 +84,8 @@ function Write-Tree {
 
     # setup root subdir
     $subDirs = (GetChildItem -path $currentDir)
-    $lastDir = $subDirs | Select-Object -First 1
-    $subDirs | ForEach-Object { $dir.Push(@( $_, ($_ -eq $lastDir), [int]$null, [int[]]$null)) }
+    $subDirs | Select-Object -First 1 | ForEach-Object { $dir.Push(@( $_, $true, [int]$null, [int[]]$null)) }
+    $subDirs | Select-Object -Skip 1 | ForEach-Object { $dir.Push(@( $_, $false, [int]$null, [int[]]$null)) }
 
     while ($dir.Count -gt 0) {
         ($currentDir, $isLast, $level, $bars) = $dir.Pop()
@@ -91,15 +94,20 @@ function Write-Tree {
 
         Write-Line -dir $currentDir -level $level -bars $bars -isLast $isLast
 
-        $subDir = (GetChildItem -path $currentDir.FullName)
-        $lastDir = $subDir | Select-Object -First 1
-        $subDir | ForEach-Object {
-            if (-Not($isLast) -and ((GetChildItem -path $currentDir.FullName).Count -gt 0)) {
-                $bars += $level
+        $subBar = [int[]]$bars
+        $hasChildren = (GetChildItem -path $currentDir.FullName).Count -gt 0
+        if (-not($isLast) -and $hasChildren) {
+            if ($null -eq $subBar) {
+                $subBar = [int[]]($level)
             }
-            $dir.Push(@( $_, ($_ -eq $lastDir), [int]($level + 1), [int[]]$bars))
+            else {
+                $subBar = $subBar + $level
+            }
         }
 
+        $subDir = (GetChildItem -path $currentDir.FullName)
+        $subDir | Select-Object -First 1 | ForEach-Object { $dir.Push(@( $_, $true, [int]($level + 1), [int[]]$subBar)) }
+        $subDir | Select-Object -Skip 1 | ForEach-Object { $dir.Push(@( $_, $false, [int]($level + 1), [int[]]$subBar)) }
     }
 }
 
