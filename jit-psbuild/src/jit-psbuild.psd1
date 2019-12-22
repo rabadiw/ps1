@@ -17,7 +17,9 @@
     # Functions to export from this module
     FunctionsToExport = @(
         'Build-PSModule',
-        'Set-PSModuleVersion'
+        'Set-PSModuleVersion',
+        'Get-PSBuildDistPath',
+        'Get-PSBuildSrcPath'
     )
 
     # Cmdlets to export from this module

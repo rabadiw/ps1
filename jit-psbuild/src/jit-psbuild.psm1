@@ -1,36 +1,41 @@
-function Get-DefaultPSSrcPath {
+. $PSScriptRoot\MessageFunctions.ps1
+
+function Get-PSBuildSrcPath {
     Get-ChildItem . -Directory -Filter src | Select-Object -First 1
 }
 
-function Get-DefaultPSDistPath {
-    $srcPath = Get-DefaultPSSrcPath
-    $moduleName = ( Get-ChildItem $srcPath -Filter *.psd1 | Select-Object -First 1).BaseName
-    Join-Path -Path (Split-Path -Parent $srcPath) -ChildPath "dist/$moduleName"
+function Get-PSBuildDistPath {
+    $srcPath = Get-PSBuildSrcPath
+    if ($srcPath -and (Test-Path $srcPath)) {
+        $moduleName = (Get-ChildItem $srcPath -Filter *.psd1 | Select-Object -First 1).BaseName
+        Join-Path -Path (Split-Path -Parent $srcPath) -ChildPath "dist/$moduleName"
+    }
 }
 
 function Build-PSModule {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $false)][ValidateNotNull()][scriptblock]$SrcPathScript = { Get-DefaultPSSrcPath },
-        [Parameter(Mandatory = $false)][ValidateNotNull()][scriptblock]$DistPathScript = { Get-DefaultPSDistPath }
+        [Parameter(Mandatory = $false)][ValidateNotNull()][scriptblock]$SrcPathScript = { Get-PSBuildSrcPath },
+        [Parameter(Mandatory = $false)][ValidateNotNull()][scriptblock]$DistPathScript = { Get-PSBuildDistPath }
     )
     $srcPath = Invoke-Command -ScriptBlock $SrcPathScript
     $distPath = Invoke-Command -ScriptBlock $DistPathScript
 
-    if (-Not(Test-Path $srcPath)) {
-        Write-Error "Source path not found '$srcPath'." -ErrorAction Stop
+    if (-Not($srcPath) -or -Not(Test-Path $srcPath)) {
+        Write-Information -MessageData (Format-ErrorMessage "Source path not found '$srcPath'.") -InformationAction Continue
+        break
+    }
+    if (-Not($distPath)) {
+        Write-Information -MessageData (Format-ErrorMessage "Destination path is not valid.") -InformationAction Continue
+        break
     }
     if (Test-Path $distPath) {
+        # clear dist content
         Remove-Item $distPath -Force -Recurse
         Write-Verbose "Removed $distPath."
     }
 
-    Copy-Item $srcPath $distPath -Recurse
-
-    @{
-        SourcePath = $srcPath;
-        DistPath   = $distPath
-    }
+    Copy-Item $srcPath $distPath -Recurse -InformationAction Continue
 }
 
 function Set-PSModuleVersion {
@@ -43,10 +48,9 @@ function Set-PSModuleVersion {
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true,
             HelpMessage = "Path to PSModule.")]
-        [Alias("PSPath")]
         [ValidateNotNullOrEmpty()]
         [string]
-        $Path = (Get-DefaultPSDistPath),
+        $Path = (Get-PSBuildDistPath),
         # Version to set for the module.
         [Parameter(Mandatory = $false)][string]$Version = (Get-SemVer -ExcludePrefix)
     )
@@ -75,7 +79,9 @@ function Set-PSModuleVersion {
 $exportModuleMemberParams = @{
     Function = @(
         'Build-PSModule',
-        'Set-PSModuleVersion'
+        'Set-PSModuleVersion',
+        'Get-PSBuildDistPath',
+        'Get-PSBuildSrcPath'
     )
     Variable = @()
 }
