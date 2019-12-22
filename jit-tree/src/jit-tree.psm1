@@ -1,3 +1,5 @@
+. $PSScriptRoot\MessageFunctions.ps1
+
 function Write-Tree {
     [CmdletBinding()]
     param (
@@ -48,12 +50,10 @@ function Write-Tree {
         if ($isLast) { $prefix += "└──" }
         else { $prefix += "├──" }
 
-        $dirInfo = ("[{0}, {1}] {2}/" -f $dir.Mode, $dir.LastWriteTime.ToString("s") , $dir.Name)
-
-
+        # $dirInfo = ("[{0}, {1}] {2}/" -f $dir.Mode, $dir.LastWriteTime.ToString("s") , $dir.Name)
 
         if ($DebugPreference.value__) { $debugDisplay = "[$level|$($bars -join ', ')] " }
-        if($DisplayHint){ $dirAttr = "[$($dir.Mode), $($dir.LastWriteTime.ToString("s"))]  "}
+        if ($DisplayHint) { $dirAttr = "[$($dir.Mode), $($dir.LastWriteTime.ToString("s"))]  " }
 
         #     # Write-Output (@{Depth = "$prefix $($dir.Name)"; Mode = $dir.Mode }) | select -Property Depth, Mode
         #     $col1 = "$prefix$($dir.Name)"
@@ -69,7 +69,8 @@ function Write-Tree {
 
     # Guard path
     if (-Not(Test-Path $Path)) {
-        Write-Error "Not a valid path $Path" -ErrorAction Stop
+        Write-Information -MessageData (Format-ErrorMessage "Not a valid path $Path") -InformationAction Continue
+        break
     }
     # root path
     $currentDir = Resolve-Path -Path $Path
@@ -102,4 +103,11 @@ function Write-Tree {
     }
 }
 
-Write-Tree "${PSScriptRoot}\.." -Exclude objects -DisplayHint
+$exportModuleMemberParams = @{
+    Function = @(
+        'Write-Tree'
+    )
+    Variable = @()
+}
+
+Export-ModuleMember @exportModuleMemberParams
