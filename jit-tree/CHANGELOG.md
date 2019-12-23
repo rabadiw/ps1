@@ -2,7 +2,7 @@
 
 ## jit-tree/v1.0.0-alpha.1 - 2019-10-02
 
-- [FEATURE] Write-Tree write path in a tree format
+- [FEATURE] Write-Tree write directory tree in a tree like format
 
 ---
 **Legend**
