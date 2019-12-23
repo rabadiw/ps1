@@ -24,6 +24,7 @@ function Set-JitTree {
 
     Set-SemVer `
         -Message $summary `
+        -Version $verNext `
         -Verbose:$Verbose `
         -WhatIf:$WhatIf
 }
