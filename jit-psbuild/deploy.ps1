@@ -7,6 +7,7 @@ function Deploy-JitPSBuild {
     $semverprefix = "jit-psbuild"
 
     $distPath = Get-PSBuildDistPath
+    Build-PSModule
     Set-PSModuleVersion -Version (Get-SemVer -Filter $semverprefix -ExcludePrefix) -Path $distPath -Verbose:$Verbose
 
     if (-Not($WhatIf)) {
@@ -14,7 +15,7 @@ function Deploy-JitPSBuild {
     }
 }
 
-function Set-JitPSBuildVer {
+function Set-JitPSBuildTag {
 
     param([switch]$WhatIf = $false, [switch]$Force = $false, [switch]$Verbose = $false)
 

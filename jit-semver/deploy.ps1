@@ -7,6 +7,7 @@ function Deploy-JitSemVer {
     $semverprefix = "jit-semver"
 
     $distPath = Get-PSBuildDistPath
+    Build-PSModule
     Set-PSModuleVersion -Version (Get-SemVer -Filter $semverprefix -ExcludePrefix) -Path $distPath -Verbose:$Verbose
 
     if (-Not($WhatIf)) {
@@ -14,7 +15,7 @@ function Deploy-JitSemVer {
     }
 }
 
-function Set-JitSemVer {
+function Set-JitSemVerTag {
 
     param([switch]$WhatIf = $false, [switch]$Force = $false, [switch]$Verbose = $false)
 

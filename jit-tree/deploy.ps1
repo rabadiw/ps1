@@ -7,6 +7,7 @@ function Deploy-JitTree {
     $semverprefix = "jit-tree"
 
     $distPath = Get-PSBuildDistPath
+    Build-PSModule
     Set-PSModuleVersion -Version (Get-SemVer -Filter $semverprefix -ExcludePrefix) -Path $distPath -Verbose:$Verbose
 
     if (-Not($WhatIf)) {
@@ -14,7 +15,7 @@ function Deploy-JitTree {
     }
 }
 
-function Set-JitTree {
+function Set-JitTreeTag {
 
     param([switch]$WhatIf = $false, [switch]$Force = $false, [switch]$Verbose = $false)
 
