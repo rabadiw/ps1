@@ -22,25 +22,27 @@ function Write-Tree {
         [int]
         $Depth = -1,
 
-        [Parameter(Mandatory = $false, ParameterSetName = "Default")]
+        [Parameter(Mandatory = $false,
+            ParameterSetName = "Default",
+            HelpMessage = "Specifies, as a string array, a property or property that this cmdlet excludes from the operation. The value of this parameter qualifies the Path parameter. Enter a path element or pattern, such as *.txt or A*. Wildcard characters are accepted.")]
         [string[]]$Exclude,
 
         [Parameter(Mandatory = $false, ParameterSetName = "Default")]
         [switch]$DisplayHint
     )
 
-    # data structure - per pass collect @(depth,bar[])
-    # ├──.git 0 [0]
-    # │  └──refs 1 [0]
-    # │     ├──heads 2 [0]
-    # │     ├──remotes 2 [0]
-    # │     │  └──origin 3 [0,2]
-    # │     └──tags 2 [0]
-    # │        └──jit-semver 3 [0]
+    # data structure - per pass collect @(depth,bars[],Last/NotLast)
+    # [0||Not-Last]       ├──.git/
+    # [1|0|Last]          │  └──refs/
+    # [2|0|Not-Last]      │     ├──heads/
+    # [2|0|Not-Last]      │     ├──remotes/
+    # [3|0, 2|Last]       │     │  └──origin/
+    # [2|0|Last]          │     └──tags/
+    # [3|0|Not-Last]      │        ├──jit-psbuild/
+    # [3|0|Last]          │        └──jit-semver/
+    # [0||Last]           └──templates/
 
-    function Write-Line($dir, $level, $bars, $isLast) {
-        # Write-Output ("{0}[$level|$($bars -join ', ')] {1}" -f ('   ' * $level), $dir.Name)
-
+    function Write-Line($dir, $level, $bars, $isLast, $count) {
         $prefix = ""
         for ($i = 0; $i -lt $level; $i++) {
             if ($bars -contains $i) { $prefix += "│  " }
@@ -49,21 +51,17 @@ function Write-Tree {
 
         if ($isLast) { $prefix += "└──" }
         else { $prefix += "├──" }
-
-        # $dirInfo = ("[{0}, {1}] {2}/" -f $dir.Mode, $dir.LastWriteTime.ToString("s") , $dir.Name)
+        $itemMsg = "$prefix$($dir.Name)/"
 
         if ($DebugPreference.value__) {
             $lastMsg = ("Not-Last", "Last")
-            $debugDisplay = "[$level|$($bars -join ', ')|$($lastMsg[$isLast])] "
+            $debugMsg = "[$level|$($bars -join ', ')|$($lastMsg[$isLast])]  ".PadRight(20, ' ')
         }
-        if ($DisplayHint) { $dirAttr = "[$($dir.Mode), $($dir.LastWriteTime.ToString("s"))]  " }
+        if ($DisplayHint) {
+            $hintMsg = "[$($dir.Mode), $($dir.LastWriteTime.ToString("yyyy-MM-dd hh:mm tt")), $($count.ToString().PadLeft(6, ' '))]  "
+        }
 
-        #     # Write-Output (@{Depth = "$prefix $($dir.Name)"; Mode = $dir.Mode }) | select -Property Depth, Mode
-        #     $col1 = "$prefix$($dir.Name)"
-        #     Write-Output "[$($dir.Mode), $($dir.LastWriteTime.ToString("s"))]   $prefix$($dir.Name)/"
-        # }
-
-        Write-Output "${dirAttr} $prefix${debugDisplay}$($dir.Name)/"
+        Write-Output "${debugMsg}${hintMsg}${itemMsg}"
     }
 
     function GetChildItem($path) {
@@ -79,20 +77,24 @@ function Write-Tree {
     $currentDir = Resolve-Path -Path $Path
     Write-Output $currentDir.Path
 
+    if ($DisplayHint.IsPresent) {
+        Write-Output "Columns: [Mode, LastWriteTime, Count, Name]"
+    }
+
     # iterate the tree
     $dir = New-Object -TypeName System.Collections.Stack
 
     # setup root subdir
     $subDirs = (GetChildItem -path $currentDir)
-    $subDirs | Select-Object -First 1 | ForEach-Object { $dir.Push(@( $_, $true, [int]$null, [int[]]$null)) }
-    $subDirs | Select-Object -Skip 1 | ForEach-Object { $dir.Push(@( $_, $false, [int]$null, [int[]]$null)) }
+    $subDirs | Select-Object -First 1 | ForEach-Object { $dir.Push(@( $_, $true, $subDir.Count, [int]$null, [int[]]$null)) }
+    $subDirs | Select-Object -Skip 1 | ForEach-Object { $dir.Push(@( $_, $false, $subDir.Count, [int]$null, [int[]]$null)) }
 
     while ($dir.Count -gt 0) {
-        ($currentDir, $isLast, $level, $bars) = $dir.Pop()
+        ($currentDir, $isLast, $count, $level, $bars) = $dir.Pop()
 
         if (($Depth -ne -1) -and ($level -gt $Depth - 1)) { continue }
 
-        Write-Line -dir $currentDir -level $level -bars $bars -isLast $isLast
+        Write-Line -dir $currentDir -level $level -bars $bars -isLast $isLast -count $count
 
         $subBar = [int[]]$bars
         $hasChildren = (GetChildItem -path $currentDir.FullName).Count -gt 0
@@ -106,8 +108,8 @@ function Write-Tree {
         }
 
         $subDir = (GetChildItem -path $currentDir.FullName)
-        $subDir | Select-Object -First 1 | ForEach-Object { $dir.Push(@( $_, $true, [int]($level + 1), [int[]]$subBar)) }
-        $subDir | Select-Object -Skip 1 | ForEach-Object { $dir.Push(@( $_, $false, [int]($level + 1), [int[]]$subBar)) }
+        $subDir | Select-Object -First 1 | ForEach-Object { $dir.Push(@( $_, $true, $subDir.Count, [int]($level + 1), [int[]]$subBar)) }
+        $subDir | Select-Object -Skip 1 | ForEach-Object { $dir.Push(@( $_, $false, $subDir.Count, [int]($level + 1), [int[]]$subBar)) }
     }
 }
 
