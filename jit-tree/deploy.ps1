@@ -4,27 +4,29 @@ function Deploy-JitTree {
     param([switch]$WhatIf = $false, [switch]$Force = $false, [switch]$Verbose = $false)
 
     $NuGetApiKeyPath = "..\.psgkey"
+    $semverprefix = "jit-tree"
 
     $distPath = Get-PSBuildDistPath
-    $verNext = Get-SemVer -Filter jit-tree -ExcludePrefix
-    Set-PSModuleVersion -Path $distPath -Version $verNext -Verbose:$Verbose
+    Build-PSModule
+    Set-PSModuleVersion -Version (Get-SemVer -Filter $semverprefix -ExcludePrefix) -Path $distPath -Verbose:$Verbose
 
     if (-Not($WhatIf)) {
         Publish-Module -Path $distPath -NuGetApiKey (get-content $NuGetApiKeyPath) -Verbose
     }
 }
 
-function Set-JitTree {
+function Set-JitTreeTag {
 
     param([switch]$WhatIf = $false, [switch]$Force = $false, [switch]$Verbose = $false)
 
+    $semverprefix = "jit-tree"
     $logPath = join-path $PSScriptRoot -ChildPath CHANGELOG.md
-    $verNext = Get-SemVerNext -Version (Get-SemVer -Filter jit-tree)
-    $summary = Get-SemVerChangeSummary -Version $verNext -ChangeLogPath $logPath | Select-Object -ExpandProperty Content
+    $semver = Get-SemVerNext -Version (Get-SemVer -Filter $semverprefix) -Prefix "$semverprefix/v"
+    $msg = Get-SemVerChangeSummary -ChangeLogPath $logPath -Version $semver | Select-Object -ExpandProperty Content
 
     Set-SemVer `
-        -Message $summary `
-        -Version $verNext `
+        -Version $semver `
+        -Message $msg `
         -Verbose:$Verbose `
         -WhatIf:$WhatIf
 }

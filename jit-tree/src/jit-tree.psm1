@@ -27,6 +27,12 @@ function Write-Tree {
         [switch]
         $File,
 
+
+        [Parameter(Mandatory = $false,
+            ParameterSetName = "Default",
+            HelpMessage = "Gets files and folders with the specified attributes. This parameter supports all attributes and lets you specify complex combinations of attributes.")]
+        [System.Management.Automation.FlagsExpression[System.IO.FileAttributes]]$Attributes,
+
         [Parameter(Mandatory = $false, ParameterSetName = "Default",
             HelpMessage = "Display filesystem entry metadata.")]
         [switch]$DisplayHint
@@ -75,7 +81,7 @@ function Write-Tree {
             [string]$path
         )
         
-        Get-ChildItem $path -Directory -Exclude $Exclude | Sort-Object -Property Name -Descending
+        Get-ChildItem $path -Directory -Exclude $Exclude -Attributes $Attributes | Sort-Object -Property Name -Descending
     }
 
     function GetChildFile {
@@ -85,7 +91,7 @@ function Write-Tree {
             [string]$path
         )
 
-        return Get-ChildItem $path -File -Exclude $Exclude | Sort-Object -Property Name -Descending
+        return Get-ChildItem $path -File -Exclude $Exclude -Attributes $Attributes | Sort-Object -Property Name -Descending
     }
 
     function GetChildItemCountOrFileLength {

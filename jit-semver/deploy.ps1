@@ -6,7 +6,8 @@ function Deploy-JitSemVer {
     $NuGetApiKeyPath = "..\.psgkey"
     $semverprefix = "jit-semver"
 
-    $distPath = (Build-PSModule).DistPath
+    $distPath = Get-PSBuildDistPath
+    Build-PSModule
     Set-PSModuleVersion -Version (Get-SemVer -Filter $semverprefix -ExcludePrefix) -Path $distPath -Verbose:$Verbose
 
     if (-Not($WhatIf)) {
@@ -14,13 +15,14 @@ function Deploy-JitSemVer {
     }
 }
 
-function Set-JitSemVer {
+function Set-JitSemVerTag {
 
     param([switch]$WhatIf = $false, [switch]$Force = $false, [switch]$Verbose = $false)
 
     $semverprefix = "jit-semver"
+    $logPath = join-path $PSScriptRoot -ChildPath CHANGELOG.md
     $semver = Get-SemVerNext -Version (Get-SemVer -Filter $semverprefix) -Prefix "$semverprefix/v"
-    $msg = Get-SemVerChangeSummary -ChangeLogPath ./CHANGELOG.md -Version $semver | Select-Object -ExpandProperty Content
+    $msg = Get-SemVerChangeSummary -ChangeLogPath $logPath -Version $semver | Select-Object -ExpandProperty Content
 
     Set-SemVer `
         -Version $semver `
