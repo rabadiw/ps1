@@ -4,30 +4,31 @@ function Write-Tree {
     [CmdletBinding()]
     param (
         # Specifies a path to one or more locations.
-        [Parameter(Mandatory = $false,
-            Position = 0,
-            ParameterSetName = "Default",
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true,
+        [Parameter(Mandatory = $false, Position = 0, ParameterSetName = "Default",
+            ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true,
             HelpMessage = "Path to one or more locations.")]
         [ValidateNotNullOrEmpty()]
         [string]
         $Path = (Get-Location),
 
-        [Parameter(Mandatory = $false,
-            ParameterSetName = "Default",
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true,
-            HelpMessage = "Path to one or more locations.")]
+        [Parameter(Mandatory = $false, ParameterSetName = "Default",
+            ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true,
+            HelpMessage = "Specifies, as an int, the depth to list, default -1 (all depths).")]
         [int]
         $Depth = -1,
 
-        [Parameter(Mandatory = $false,
-            ParameterSetName = "Default",
+        [Parameter(Mandatory = $false, ParameterSetName = "Default",
             HelpMessage = "Specifies, as a string array, a property or property that this cmdlet excludes from the operation. The value of this parameter qualifies the Path parameter. Enter a path element or pattern, such as *.txt or A*. Wildcard characters are accepted.")]
         [string[]]$Exclude,
 
-        [Parameter(Mandatory = $false, ParameterSetName = "Default")]
+        # Parameter help description
+        [Parameter(Mandatory = $false, ParameterSetName = "Default",
+            HelpMessage = "List files in output")]
+        [switch]
+        $File,
+
+        [Parameter(Mandatory = $false, ParameterSetName = "Default",
+            HelpMessage = "Display filesystem entry metadata.")]
         [switch]$DisplayHint
     )
 
@@ -42,7 +43,7 @@ function Write-Tree {
     # [3|0|Last]          │        └──jit-semver/
     # [0||Last]           └──templates/
 
-    function Write-Line($dir, $level, $bars, $isLast, $count) {
+    function Write-Line($dir, $level, $bars, $isLast, $count, $isDir) {
         $prefix = ""
         for ($i = 0; $i -lt $level; $i++) {
             if ($bars -contains $i) { $prefix += "│  " }
@@ -51,21 +52,85 @@ function Write-Tree {
 
         if ($isLast) { $prefix += "└──" }
         else { $prefix += "├──" }
-        $itemMsg = "$prefix$($dir.Name)/"
+        $itemMsg = "$prefix$($dir.Name)"
+        if ($isDir) {
+            $itemMsg += [IO.Path]::DirectorySeparatorChar
+        }        
 
         if ($DebugPreference.value__) {
             $lastMsg = ("Not-Last", "Last")
             $debugMsg = "[$level|$($bars -join ', ')|$($lastMsg[$isLast])]  ".PadRight(20, ' ')
         }
         if ($DisplayHint) {
-            $hintMsg = "[$($dir.Mode), $($dir.LastWriteTime.ToString("yyyy-MM-dd hh:mm tt")), $($count.ToString().PadLeft(6, ' '))]  "
+            $hintMsg = "[$($dir.Mode), $($dir.LastWriteTime.ToString("yyyy-MM-dd hh:mm tt")), $($count.ToString().PadLeft(8, ' '))]  "
         }
 
         Write-Output "${debugMsg}${hintMsg}${itemMsg}"
     }
 
-    function GetChildItem($path) {
-        return Get-ChildItem $path -Directory -Exclude $Exclude | Sort-Object -Property Name -Descending
+    function GetChildDirectory {
+
+        [OutputType([System.IO.FileSystemInfo[]])]
+        param(
+            [string]$path
+        )
+        
+        Get-ChildItem $path -Directory -Exclude $Exclude | Sort-Object -Property Name -Descending
+    }
+
+    function GetChildFile {
+        
+        [OutputType([System.IO.FileSystemInfo[]])]
+        param(
+            [string]$path
+        )
+
+        return Get-ChildItem $path -File -Exclude $Exclude | Sort-Object -Property Name -Descending
+    }
+
+    function GetChildItemCountOrFileLength {
+        
+        [OutputType([int])]
+        param(
+            [string]$path
+        )
+
+        if ($_.Attributes.HasFlag([System.IO.FileAttributes]::Directory)) {
+            return  $_.GetDirectories().Count 
+        }
+        return $_.Length  
+    }
+
+    function LoadFSItems {
+
+        param (
+            [string]$path,
+            [int]$level,
+            [int[]]$subBar
+        )
+
+        $fsitems = @()
+        if ($File.IsPresent) {
+            $fsitems += GetChildFile -path $path
+        }
+        $fsitems += GetChildDirectory -path $path
+        
+        $rtn = @($fsitems | ForEach-Object { 
+                @{
+                    dir           = $_; 
+                    isLast        = $false; 
+                    childDirCount = (GetChildItemCountOrFileLength $_); 
+                    treeLevel     = $level; 
+                    treeBarLevel  = $subBar;
+                    isDir         = $_.Attributes.HasFlag([System.IO.FileAttributes]::Directory)
+                } })
+        
+        # set $isLast to true for 1st item (note: decending order)
+        if ($rtn.Length -gt 0) {
+            $rtn[0].isLast = $true 
+        }
+
+        return $rtn
     }
 
     # Guard path
@@ -74,42 +139,48 @@ function Write-Tree {
         break
     }
     # root path
-    $currentDir = Resolve-Path -Path $Path
-    Write-Output $currentDir.Path
+    $rootPath = Resolve-Path -Path $Path
+    Write-Output $rootPath.Path
 
     if ($DisplayHint.IsPresent) {
-        Write-Output "Columns: [Mode, LastWriteTime, Count, Name]"
+        Write-Output "Columns: [Mode, LastWriteTime, Length, Name]"
     }
 
     # iterate the tree
     $dir = New-Object -TypeName System.Collections.Stack
 
-    # setup root subdir
-    $subDirs = (GetChildItem -path $currentDir)
-    $subDirs | Select-Object -First 1 | ForEach-Object { $dir.Push(@( $_, $true, $subDir.Count, [int]$null, [int[]]$null)) }
-    $subDirs | Select-Object -Skip 1 | ForEach-Object { $dir.Push(@( $_, $false, $subDir.Count, [int]$null, [int[]]$null)) }
+    # init root
+    LoadFSItems -path $rootPath | ForEach-Object { $dir.Push($_) }
 
     while ($dir.Count -gt 0) {
-        ($currentDir, $isLast, $count, $level, $bars) = $dir.Pop()
+        
+        $dirEntry = $dir.Pop()
 
+        $currentDir = $dirEntry.dir
+        $isLast = $dirEntry.isLast
+        $count = $dirEntry.childDirCount
+        $level = $dirEntry.treeLevel
+        $bars = $dirEntry.treeBarLevel
+        $isDir = $dirEntry.isDir
+
+        # adhere to depth
         if (($Depth -ne -1) -and ($level -gt $Depth - 1)) { continue }
 
-        Write-Line -dir $currentDir -level $level -bars $bars -isLast $isLast -count $count
-
-        $subBar = [int[]]$bars
-        $hasChildren = (GetChildItem -path $currentDir.FullName).Count -gt 0
-        if (-not($isLast) -and $hasChildren) {
-            if ($null -eq $subBar) {
-                $subBar = [int[]]($level)
+        Write-Line -dir $currentDir -level $level -bars $bars -isLast $isLast -count $count -isDir $isDir
+        
+        if ($isDir) { 
+            $subBar = [int[]]$bars
+            if (-not($isLast) ) {
+                if ($null -eq $subBar) {
+                    $subBar = [int[]]($level)
+                }
+                else {
+                    $subBar = $subBar + $level
+                }
             }
-            else {
-                $subBar = $subBar + $level
-            }
+           
+            LoadFSItems -path $currentDir -level ($level + 1) -subBar $subBar | ForEach-Object { $dir.Push($_) }
         }
-
-        $subDir = (GetChildItem -path $currentDir.FullName)
-        $subDir | Select-Object -First 1 | ForEach-Object { $dir.Push(@( $_, $true, $subDir.Count, [int]($level + 1), [int[]]$subBar)) }
-        $subDir | Select-Object -Skip 1 | ForEach-Object { $dir.Push(@( $_, $false, $subDir.Count, [int]($level + 1), [int[]]$subBar)) }
     }
 }
 
