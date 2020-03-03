@@ -41,32 +41,3 @@ function Format-ErrorMessage {
     )
     Format-MessageData -MessageData "ERROR: $MessageData" -ForegroundColor Red
 }
-
-
-
-function Get-DefaultTheme() { 
-    @{
-        defaultColor  = $Host.UI.RawUI.ForegroundColor
-        displayHintFg = $Host.UI.RawUI.ForegroundColor
-        directoryFg   = $Host.UI.RawUI.ForegroundColor
-        fileFg        = $Host.UI.RawUI.ForegroundColor
-    }
-}
-
-function Get-DarkTheme() { 
-    @{
-        defaultColor  = $Host.UI.RawUI.ForegroundColor
-        displayHintFg = [System.ConsoleColor]::DarkGray
-        directoryFg   = [System.ConsoleColor]::Green
-        fileFg        = $Host.UI.RawUI.ForegroundColor
-    }
-}
-
-function Get-LightTheme() { 
-    @{
-        defaultColor  = $Host.UI.RawUI.ForegroundColor
-        displayHintFg = [System.ConsoleColor]::DarkGray
-        directoryFg   = [System.ConsoleColor]::Green
-        fileFg        = $Host.UI.RawUI.ForegroundColor
-    }
-}

@@ -1,4 +1,10 @@
 . $PSScriptRoot\MessageFunctions.ps1
+. $PSScriptRoot\ColorTheme.ps1
+
+
+$JitTreeSettings = @{
+    ColorTheme = Get-JitTreeDarkTheme
+}
 
 function Write-Tree {
     [CmdletBinding()]
@@ -32,13 +38,7 @@ function Write-Tree {
 
         [Parameter(Mandatory = $false, ParameterSetName = "Default",
             HelpMessage = "Display filesystem entry metadata.")]
-        [switch]$DisplayHint,
-
-        [Parameter(Mandatory = $false, ParameterSetName = "Default",
-            HelpMessage = "Specifies the theme to apply.")]
-        [ValidateSet("Default", "Dark", "Light")]
-        [string]
-        $Theme = "Default"
+        [switch]$DisplayHint
     )
 
     # data structure - per pass collect @(depth,bars[],Last/NotLast)
@@ -55,7 +55,7 @@ function Write-Tree {
     function Write-DisplayHintHeader() {
         if ($DisplayHint.IsPresent) {
             $text = "[$("Mode".PadRight(6, ' ')), $("LastWriteTime".PadRight(19, ' ')), $("Length".PadRight(8, ' ')),  Name]"
-            $data = Format-MessageData -MessageData $text -ForegroundColor $colorTheme.displayHintFg
+            $data = Format-MessageData -MessageData $text -ForegroundColor $JitTreeSettings.ColorTheme.DisplayHintForeground
             Write-Information -MessageData $data -InformationAction Continue
         }
     }
@@ -84,24 +84,22 @@ function Write-Tree {
 
         if ($debugMsg) { 
             Write-Information `
-                -MessageData (Format-MessageData -MessageData $debugMsg -ForegroundCOlor $colorTheme.displayHintFg -NoNewline) `
+                -MessageData (Format-MessageData -MessageData $debugMsg -ForegroundCOlor $JitTreeSettings.ColorTheme.DisplayHintForeground -NoNewline) `
                 -InformationAction Continue
         }
 
         if ($hintMsg) { 
             Write-Information `
-                -MessageData (Format-MessageData -MessageData $hintMsg -ForegroundCOlor $colorTheme.displayHintFg -NoNewline) `
+                -MessageData (Format-MessageData -MessageData $hintMsg -ForegroundCOlor $JitTreeSettings.ColorTheme.DisplayHintForeground -NoNewline) `
                 -InformationAction Continue
         }
 
         if ($itemMsg) {
-            $fg = [System.ConsoleColor]($colorTheme.fileFg, $colorTheme.directoryFg)[$isDir]
+            $fg = [System.ConsoleColor]($JitTreeSettings.ColorTheme.FileForeground, $JitTreeSettings.ColorTheme.DirectoryForeground)[$isDir]
             Write-Information `
                 -MessageData (Format-MessageData -MessageData $itemMsg -ForegroundCOlor $fg) `
                 -InformationAction Continue
         }
-
-        # Write-Output "${debugMsg}${hintMsg}${itemMsg}"
     }
 
     function GetChildDirectory {
@@ -175,13 +173,6 @@ function Write-Tree {
         break
     }
 
-    # theme
-    $colorTheme = switch ($Theme) {
-        "Dark" { Get-DarkTheme }
-        "Light" { Get-LightTheme }
-        Default { Get-DefaultTheme }
-    }
-
     # root path
     $rootPath = Resolve-Path -Path $Path
     Write-Output $rootPath.Path
@@ -230,7 +221,9 @@ $exportModuleMemberParams = @{
     Function = @(
         'Write-Tree'
     )
-    Variable = @()
+    Variable = @(
+        'JitTreeSettings'
+    )
 }
 
 Export-ModuleMember @exportModuleMemberParams

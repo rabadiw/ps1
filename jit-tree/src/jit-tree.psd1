@@ -16,14 +16,19 @@
 
     # Functions to export from this module
     FunctionsToExport = @(
-        'Write-Tree'
+        'Write-Tree',
+        'Get-JitTreeDefaultTheme',
+        'Get-JitTreeDarkTheme',
+        'Get-JitTreeLightTheme'
     )
 
     # Cmdlets to export from this module
     CmdletsToExport   = @()
 
     # Variables to export from this module
-    VariablesToExport = @('')
+    VariablesToExport = @(
+        'JitTreeSettings'
+    )
 
     # Aliases to export from this module
     AliasesToExport   = @()
