@@ -1,4 +1,4 @@
-function Format-HostInformationMessage {
+function  Format-MessageData {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
@@ -21,7 +21,7 @@ function Format-InformationMessage {
         [Parameter(Mandatory)]
         [System.Object]$MessageData
     )
-    Format-HostInformationMessage -MessageData "INFO: $MessageData"
+    Format-MessageData -MessageData "INFO: $MessageData"
 }
 
 function Format-WarningMessage {
@@ -30,7 +30,7 @@ function Format-WarningMessage {
         [Parameter(Mandatory)]
         [System.Object]$MessageData
     )
-    Format-HostInformationMessage -MessageData "WARNING: $MessageData" -ForegroundColor Yellow
+    Format-MessageData -MessageData "WARNING: $MessageData" -ForegroundColor Yellow
 }
 
 function Format-ErrorMessage {
@@ -39,5 +39,34 @@ function Format-ErrorMessage {
         [Parameter(Mandatory)]
         [System.Object]$MessageData
     )
-    Format-HostInformationMessage -MessageData "ERROR: $MessageData" -ForegroundColor Red
+    Format-MessageData -MessageData "ERROR: $MessageData" -ForegroundColor Red
+}
+
+
+
+function Get-DefaultTheme() { 
+    @{
+        defaultColor  = $Host.UI.RawUI.ForegroundColor
+        displayHintFg = $Host.UI.RawUI.ForegroundColor
+        directoryFg   = $Host.UI.RawUI.ForegroundColor
+        fileFg        = $Host.UI.RawUI.ForegroundColor
+    }
+}
+
+function Get-DarkTheme() { 
+    @{
+        defaultColor  = $Host.UI.RawUI.ForegroundColor
+        displayHintFg = [System.ConsoleColor]::DarkGray
+        directoryFg   = [System.ConsoleColor]::Green
+        fileFg        = $Host.UI.RawUI.ForegroundColor
+    }
+}
+
+function Get-LightTheme() { 
+    @{
+        defaultColor  = $Host.UI.RawUI.ForegroundColor
+        displayHintFg = [System.ConsoleColor]::DarkGray
+        directoryFg   = [System.ConsoleColor]::Green
+        fileFg        = $Host.UI.RawUI.ForegroundColor
+    }
 }

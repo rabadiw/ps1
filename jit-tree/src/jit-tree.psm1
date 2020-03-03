@@ -3,7 +3,6 @@
 function Write-Tree {
     [CmdletBinding()]
     param (
-        # Specifies a path to one or more locations.
         [Parameter(Mandatory = $false, Position = 0, ParameterSetName = "Default",
             ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true,
             HelpMessage = "Path to one or more locations.")]
@@ -21,12 +20,10 @@ function Write-Tree {
             HelpMessage = "Specifies, as a string array, a property or property that this cmdlet excludes from the operation. The value of this parameter qualifies the Path parameter. Enter a path element or pattern, such as *.txt or A*. Wildcard characters are accepted.")]
         [string[]]$Exclude,
 
-        # Parameter help description
         [Parameter(Mandatory = $false, ParameterSetName = "Default",
             HelpMessage = "List files in output")]
         [switch]
         $File,
-
 
         [Parameter(Mandatory = $false,
             ParameterSetName = "Default",
@@ -35,7 +32,13 @@ function Write-Tree {
 
         [Parameter(Mandatory = $false, ParameterSetName = "Default",
             HelpMessage = "Display filesystem entry metadata.")]
-        [switch]$DisplayHint
+        [switch]$DisplayHint,
+
+        [Parameter(Mandatory = $false, ParameterSetName = "Default",
+            HelpMessage = "Specifies the theme to apply.")]
+        [ValidateSet("Default", "Dark", "Light")]
+        [string]
+        $Theme = "Default"
     )
 
     # data structure - per pass collect @(depth,bars[],Last/NotLast)
@@ -48,6 +51,14 @@ function Write-Tree {
     # [3|0|Not-Last]      │        ├──jit-psbuild/
     # [3|0|Last]          │        └──jit-semver/
     # [0||Last]           └──templates/
+
+    function Write-DisplayHintHeader() {
+        if ($DisplayHint.IsPresent) {
+            $text = "[$("Mode".PadRight(6, ' ')), $("LastWriteTime".PadRight(19, ' ')), $("Length".PadRight(8, ' ')),  Name]"
+            $data = Format-MessageData -MessageData $text -ForegroundColor $colorTheme.displayHintFg
+            Write-Information -MessageData $data -InformationAction Continue
+        }
+    }
 
     function Write-Line($dir, $level, $bars, $isLast, $count, $isDir) {
         $prefix = ""
@@ -71,7 +82,26 @@ function Write-Tree {
             $hintMsg = "[$($dir.Mode), $($dir.LastWriteTime.ToString("yyyy-MM-dd hh:mm tt")), $($count.ToString().PadLeft(8, ' '))]  "
         }
 
-        Write-Output "${debugMsg}${hintMsg}${itemMsg}"
+        if ($debugMsg) { 
+            Write-Information `
+                -MessageData (Format-MessageData -MessageData $debugMsg -ForegroundCOlor $colorTheme.displayHintFg -NoNewline) `
+                -InformationAction Continue
+        }
+
+        if ($hintMsg) { 
+            Write-Information `
+                -MessageData (Format-MessageData -MessageData $hintMsg -ForegroundCOlor $colorTheme.displayHintFg -NoNewline) `
+                -InformationAction Continue
+        }
+
+        if ($itemMsg) {
+            $fg = [System.ConsoleColor]($colorTheme.fileFg, $colorTheme.directoryFg)[$isDir]
+            Write-Information `
+                -MessageData (Format-MessageData -MessageData $itemMsg -ForegroundCOlor $fg) `
+                -InformationAction Continue
+        }
+
+        # Write-Output "${debugMsg}${hintMsg}${itemMsg}"
     }
 
     function GetChildDirectory {
@@ -144,14 +174,20 @@ function Write-Tree {
         Write-Information -MessageData (Format-ErrorMessage "Not a valid path $Path") -InformationAction Continue
         break
     }
+
+    # theme
+    $colorTheme = switch ($Theme) {
+        "Dark" { Get-DarkTheme }
+        "Light" { Get-LightTheme }
+        Default { Get-DefaultTheme }
+    }
+
     # root path
     $rootPath = Resolve-Path -Path $Path
     Write-Output $rootPath.Path
 
-    if ($DisplayHint.IsPresent) {
-        Write-Output "Columns: [Mode, LastWriteTime, Length, Name]"
-    }
-
+    Write-DisplayHintHeader
+    
     # iterate the tree
     $dir = New-Object -TypeName System.Collections.Stack
 
