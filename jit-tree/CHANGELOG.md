@@ -4,6 +4,7 @@
 
 - [FEATURE] -Theme flag for dark, light and default colors
 
+---
 ## jit-tree/v1.0.0-alpha.3 - 2020-02-06
 
 - [FEATURE] -File flag write directory file tree in a tree like format
