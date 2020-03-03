@@ -1,5 +1,10 @@
 # jit-tree Release History
 
+## jit-tree/v1.0.0-alpha.5 - 2020-03-03
+
+- [FEATURE] Removed -Theme flag in place of externalize theme customization
+
+---
 ## jit-tree/v1.0.0-alpha.4 - 2020-03-03
 
 - [FEATURE] -Theme flag for dark, light and default colors
