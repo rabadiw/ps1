@@ -17,16 +17,18 @@ function Deploy-JitTree {
 
 function Set-JitTreeTag {
 
-    param([switch]$WhatIf = $false, [switch]$Force = $false, [switch]$Verbose = $false)
+    param([switch]$WhatIf = $false, [switch]$Force = $false, [switch]$Verbose = $false,
+        [ValidateSet("major", "minor", "patch", "build")][string]$SemVerb = "patch")
 
     $semverprefix = "jit-tree"
     $logPath = join-path $PSScriptRoot -ChildPath CHANGELOG.md
-    $semver = Get-SemVerNext -Version (Get-SemVer -Filter $semverprefix) -Prefix "$semverprefix/v"
+    $semver = Get-SemVerNext -Version (Get-SemVer -Filter $semverprefix) -Prefix "$semverprefix/v" -SemVerb $SemVerb
     $msg = Get-SemVerChangeSummary -ChangeLogPath $logPath -Version $semver | Select-Object -ExpandProperty Content
 
     Set-SemVer `
         -Version $semver `
         -Message $msg `
         -Verbose:$Verbose `
+        -Force:$Force `
         -WhatIf:$WhatIf
 }
