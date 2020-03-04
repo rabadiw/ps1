@@ -1,5 +1,10 @@
 # jit-semver Release History
 
+## jit-semver/v1.0.0-rc.1 - 2020-03-03
+
+- [FEATURE] Get-SemVer sort algorithm update
+
+---
 ## jit-semver/v1.0.0-alpha.2 - 2019-10-13
 
 - [FEATURE] Get-SemVer support multiple products, title, filter by product
