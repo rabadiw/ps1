@@ -101,6 +101,34 @@ C:\github.com\rabadiw\ps1
 └──templates/
 ```
 
+# Customization
+
+To enable a `tl` alias with defaults to replace `Get-ChildItems` or `ls`, add the following lines to your PowerShell `$PROFILE`.
+
+```powershell
+# Add alias
+Set-Alias -Name tl -Value Write-Tree
+# Set defaults
+$PSDefaultParameterValues.Add("tl:Depth", 1)
+$PSDefaultParameterValues.Add("tl:DisplayHint", $true)
+$PSDefaultParameterValues.Add("tl:File", $true)
+# Add dark theme (this is the default)
+$JitTreeSettings.ColorTheme = Get-JitTreeDarkTheme
+```
+
+JITTreeSettings.ColorTheme properties:
+```powershell
+- [System.ConsoleColor] DefaultColor         
+- [System.ConsoleColor] DisplayHintForeground
+- [System.ConsoleColor] DirectoryForeground  
+- [System.ConsoleColor] FileForeground       
+```
+
+Color theme cmdlets:
+- Get-JitTreeDarkTheme (default theme)
+- Get-JitTreeLightTheme
+- Get-JitTreeDefaultTheme
+
 # Contributors
 ## Getting started
 It is really simple! Clone this repo then dive in. Each folder is a tooling. Below each tooling is the src folder with all the source code, and a test folder for tests related to the tooling.
