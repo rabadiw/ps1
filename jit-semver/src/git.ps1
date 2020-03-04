@@ -1,9 +1,14 @@
 function Get-GitVersionHistory {
-    (git tag)
+    $items = (git tag) 
+    return @($items | 
+        Select-String -Pattern '[0-9]+-' | 
+        Sort-Object) + ( $items |
+        Select-String -Pattern '[0-9]+-' -NotMatch | 
+        Sort-Object)
 }
 
 function Get-GitVersion {
-    (git describe --tags)
+    (git describe --tags --abbrev=0)
 }
 
 function Get-GitTree {

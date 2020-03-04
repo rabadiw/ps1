@@ -37,8 +37,8 @@ function Format-SemVerString {
 
 function Get-SemVerOverride {
     Get-Content ./.semver.yml |
-        ForEach-Object { , ($_ -split ':') } |
-        ForEach-Object { @{ $_[0] = $_[1].Trim() } }
+    ForEach-Object { , ($_ -split ':') } |
+    ForEach-Object { @{ $_[0] = $_[1].Trim() } }
 }
 
 function Get-DefaultVersion {
@@ -63,7 +63,7 @@ function Get-SemVer {
     #   }
     if ((Test-SemVer -ShowMessage)) {
         if (Test-String $Filter) {
-            $ver = Get-GitVersionHistory | Where-Object { $_ -match $Filter } | Sort-Object -Bottom 1
+            $ver = Get-GitVersionHistory | Select-String -Pattern "^$Filter" | Select-Object -Last 1
             if (-Not(Test-String $ver)) {
                 $ver = (Get-DefaultVersion -Verbose:$VerbosePreference.value__)
                 $ver = "$filter/$ver"
@@ -90,7 +90,7 @@ function Get-SemVerNext {
     )
 
     ($major, $minor, $patch, $pre, $prepatch, $build, $verPrefix) = ConvertTo-SemVer -Version $Version |
-        ForEach-Object { ($_.Major, $_.Minor, $_.Patch, $_.Pre, $_.PrePatch, $_.Build, $_.Prefix) }
+    ForEach-Object { ($_.Major, $_.Minor, $_.Patch, $_.Pre, $_.PrePatch, $_.Build, $_.Prefix) }
     switch ($SemVerb) {
         "major" {
             if (Test-String $pre) {
