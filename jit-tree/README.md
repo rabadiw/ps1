@@ -10,6 +10,11 @@ PS> Install-Module -Name jit-tree -Scope CurrentUser
 PS> Import-Module -Name jit-tree
 ```
 
+## Update
+```powershell
+PS> Update-Module -Name jit-tree -Scope CurrentUser
+```
+
 # Usage
 
 ## List current tree.
