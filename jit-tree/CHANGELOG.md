@@ -1,5 +1,12 @@
 # jit-tree Release History
 
+## jit-tree/v1.0.0-alpha.6 - 2021-03-24
+
+- [FEATURE] refactor tree logic, improve performance
+- [FIXED] Exclude does not work when using -File flag
+- [FIXED] Color causes an InvalidArgument on output
+
+---
 ## jit-tree/v1.0.0-alpha.5 - 2020-03-03
 
 - [FEATURE] Removed -Theme flag in place of externalize theme customization
@@ -23,9 +30,9 @@
 ---
 **Legend**
 
-**[FEATURE]** - added capabilites.
+**[FEATURE]** - added capabilities.
 
-**[BREAKING]** - changed exisiting features that could lead to breaking dependent scripts. These are few but sometimes unavoidable.
+**[BREAKING]** - changed existing features that could lead to breaking dependent scripts. These are few but sometimes unavoidable.
 
 **[DEPRECATED]** - soon-to-be removed features.
 

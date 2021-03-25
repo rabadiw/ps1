@@ -3,7 +3,9 @@ function  Format-MessageData {
     param(
         [Parameter(Mandatory)]
         [System.Object]$MessageData,
+        [Alias("fg")]
         [System.ConsoleColor]$ForegroundColor = $Host.UI.RawUI.ForegroundColor,
+        [Alias("bg")]
         [System.ConsoleColor]$BackgroundColor = $Host.UI.RawUI.BackgroundColor,
         [Switch]$NoNewline
     )

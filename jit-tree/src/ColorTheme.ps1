@@ -1,4 +1,4 @@
-function Get-JitTreeDefaultTheme() { 
+function Get-JitTreeDefaultTheme() {
     @{
         DefaultColor          = $Host.UI.RawUI.ForegroundColor
         DisplayHintForeground = $Host.UI.RawUI.ForegroundColor
@@ -7,7 +7,7 @@ function Get-JitTreeDefaultTheme() {
     }
 }
 
-function Get-JitTreeDarkTheme() { 
+function Get-JitTreeDarkTheme() {
     @{
         DefaultColor          = $Host.UI.RawUI.ForegroundColor
         DisplayHintForeground = [System.ConsoleColor]::DarkGray
@@ -16,7 +16,7 @@ function Get-JitTreeDarkTheme() {
     }
 }
 
-function Get-JitTreeLightTheme() { 
+function Get-JitTreeLightTheme() {
     @{
         DefaultColor          = $Host.UI.RawUI.ForegroundColor
         DisplayHintForeground = [System.ConsoleColor]::DarkGray

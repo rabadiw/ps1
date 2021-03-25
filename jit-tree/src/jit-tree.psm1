@@ -1,7 +1,6 @@
 . $PSScriptRoot\MessageFunctions.ps1
 . $PSScriptRoot\ColorTheme.ps1
 
-
 $JitTreeSettings = @{
     ColorTheme = Get-JitTreeDarkTheme
 }
@@ -54,8 +53,8 @@ function Write-Tree {
 
     function Write-DisplayHintHeader() {
         if ($DisplayHint.IsPresent) {
-            $text = "[$("Mode".PadRight(6, ' ')), $("LastWriteTime".PadRight(19, ' ')), $("Length".PadRight(8, ' ')),  Name]"
-            $data = Format-MessageData -MessageData $text -ForegroundColor $JitTreeSettings.ColorTheme.DisplayHintForeground
+            $text = "[$("Mode".PadRight(5, ' ')), $("LastWriteTime".PadRight(19, ' ')), $("Length".PadRight(8, ' '))]  Name"
+            $data = Format-HostInformationMessage -MessageData $text -ForegroundColor $JitTreeSettings.ColorTheme.DisplayHintForeground
             Write-Information -MessageData $data -InformationAction Continue
         }
     }
@@ -72,7 +71,7 @@ function Write-Tree {
         $itemMsg = "$prefix$($dir.Name)"
         if ($isDir) {
             $itemMsg += [IO.Path]::DirectorySeparatorChar
-        }        
+        }
 
         if ($DebugPreference.value__) {
             $lastMsg = ("Not-Last", "Last")
@@ -82,24 +81,11 @@ function Write-Tree {
             $hintMsg = "[$($dir.Mode), $($dir.LastWriteTime.ToString("yyyy-MM-dd hh:mm tt")), $($count.ToString().PadLeft(8, ' '))]  "
         }
 
-        if ($debugMsg) { 
-            Write-Information `
-                -MessageData (Format-MessageData -MessageData $debugMsg -ForegroundCOlor $JitTreeSettings.ColorTheme.DisplayHintForeground -NoNewline) `
-                -InformationAction Continue
-        }
-
-        if ($hintMsg) { 
-            Write-Information `
-                -MessageData (Format-MessageData -MessageData $hintMsg -ForegroundCOlor $JitTreeSettings.ColorTheme.DisplayHintForeground -NoNewline) `
-                -InformationAction Continue
-        }
-
-        if ($itemMsg) {
-            $fg = [System.ConsoleColor]($JitTreeSettings.ColorTheme.FileForeground, $JitTreeSettings.ColorTheme.DirectoryForeground)[$isDir]
-            Write-Information `
-                -MessageData (Format-MessageData -MessageData $itemMsg -ForegroundCOlor $fg) `
-                -InformationAction Continue
-        }
+        $fg = [System.ConsoleColor]($JitTreeSettings.ColorTheme.FileForeground, $JitTreeSettings.ColorTheme.DirectoryForeground)[$isDir -or $false]
+        $msg = Format-HostInformationMessage -MessageData "${debugMsg}${hintMsg}" -NoNewline -fg $JitTreeSettings.ColorTheme.DisplayHintForeground
+        $itemMsg = Format-HostInformationMessage -MessageData "${itemMsg}" -fg $fg
+        Write-Information -MessageData $msg -OutBuffer 25 -InformationAction Continue
+        Write-Information -MessageData $itemMsg -OutBuffer 25 -InformationAction Continue
     }
 
     function GetChildDirectory {
@@ -108,31 +94,31 @@ function Write-Tree {
         param(
             [string]$path
         )
-        
+
         Get-ChildItem $path -Directory -Exclude $Exclude -Attributes $Attributes | Sort-Object -Property Name -Descending
     }
 
     function GetChildFile {
-        
+
         [OutputType([System.IO.FileSystemInfo[]])]
         param(
             [string]$path
         )
 
-        return Get-ChildItem $path -File -Exclude $Exclude -Attributes $Attributes | Sort-Object -Property Name -Descending
+        return Get-ChildItem $path -File -Depth 0 -Exclude $Exclude -Attributes $Attributes | Sort-Object -Property Name -Descending
     }
 
     function GetChildItemCountOrFileLength {
-        
+
         [OutputType([int])]
         param(
             [string]$path
         )
 
         if ($_.Attributes.HasFlag([System.IO.FileAttributes]::Directory)) {
-            return  $_.GetDirectories().Count 
+            return  $_.GetDirectories().Count
         }
-        return $_.Length  
+        return $_.Length
     }
 
     function LoadFSItems {
@@ -145,23 +131,23 @@ function Write-Tree {
 
         $fsitems = @()
         if ($File.IsPresent) {
-            $fsitems += GetChildFile -path $path
+            $fsitems += (GetChildFile -path $path)
         }
-        $fsitems += GetChildDirectory -path $path
-        
-        $rtn = @($fsitems | ForEach-Object { 
+        $fsitems += (GetChildDirectory -path $path)
+
+        $rtn = @($fsitems | ForEach-Object {
                 @{
-                    dir           = $_; 
-                    isLast        = $false; 
-                    childDirCount = (GetChildItemCountOrFileLength $_); 
-                    treeLevel     = $level; 
+                    dir           = $_;
+                    isLast        = $false;
+                    childDirCount = (GetChildItemCountOrFileLength $_);
+                    treeLevel     = $level;
                     treeBarLevel  = $subBar;
                     isDir         = $_.Attributes.HasFlag([System.IO.FileAttributes]::Directory)
                 } })
-        
+
         # set $isLast to true for 1st item (note: decending order)
         if ($rtn.Length -gt 0) {
-            $rtn[0].isLast = $true 
+            $rtn[0].isLast = $true
         }
 
         return $rtn
@@ -178,7 +164,7 @@ function Write-Tree {
     Write-Output $rootPath.Path
 
     Write-DisplayHintHeader
-    
+
     # iterate the tree
     $dir = New-Object -TypeName System.Collections.Stack
 
@@ -186,7 +172,7 @@ function Write-Tree {
     LoadFSItems -path $rootPath | ForEach-Object { $dir.Push($_) }
 
     while ($dir.Count -gt 0) {
-        
+
         $dirEntry = $dir.Pop()
 
         $currentDir = $dirEntry.dir
@@ -200,8 +186,8 @@ function Write-Tree {
         if (($Depth -ne -1) -and ($level -gt $Depth - 1)) { continue }
 
         Write-Line -dir $currentDir -level $level -bars $bars -isLast $isLast -count $count -isDir $isDir
-        
-        if ($isDir) { 
+
+        if ($isDir) {
             $subBar = [int[]]$bars
             if (-not($isLast) ) {
                 if ($null -eq $subBar) {
@@ -211,7 +197,7 @@ function Write-Tree {
                     $subBar = $subBar + $level
                 }
             }
-           
+
             LoadFSItems -path $currentDir -level ($level + 1) -subBar $subBar | ForEach-Object { $dir.Push($_) }
         }
     }
