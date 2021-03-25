@@ -1,6 +1,6 @@
 # jit-tree Release History
 
-## jit-tree/v1.0.0-alpha.6 - 2021-03-24
+## jit-tree/v1.0.1 - 2021-03-24
 
 - [FEATURE] refactor tree logic, improve performance
 - [FIXED] Exclude does not work when using -File flag

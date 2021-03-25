@@ -1,4 +1,4 @@
-function  Format-MessageData {
+function Format-HostInformationMessage {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
@@ -23,7 +23,7 @@ function Format-InformationMessage {
         [Parameter(Mandatory)]
         [System.Object]$MessageData
     )
-    Format-MessageData -MessageData "INFO: $MessageData"
+    Format-HostInformationMessage -MessageData "INFO: $MessageData"
 }
 
 function Format-WarningMessage {
@@ -32,7 +32,7 @@ function Format-WarningMessage {
         [Parameter(Mandatory)]
         [System.Object]$MessageData
     )
-    Format-MessageData -MessageData "WARNING: $MessageData" -ForegroundColor Yellow
+    Format-HostInformationMessage -MessageData "WARNING: $MessageData" -ForegroundColor Yellow
 }
 
 function Format-ErrorMessage {
@@ -41,5 +41,5 @@ function Format-ErrorMessage {
         [Parameter(Mandatory)]
         [System.Object]$MessageData
     )
-    Format-MessageData -MessageData "ERROR: $MessageData" -ForegroundColor Red
+    Format-HostInformationMessage -MessageData "ERROR: $MessageData" -ForegroundColor Red
 }
